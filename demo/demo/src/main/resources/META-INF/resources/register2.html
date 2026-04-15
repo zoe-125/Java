@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>免費註冊 - TECO 購物通</title>
+    <link rel="stylesheet" href="product.css">
+    <style>
+        .auth-container { max-width: 400px; margin: 80px auto; padding: 30px; background: #fff; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .auth-form input { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
+        .auth-btn { width: 100%; background: #333; color: white; border: none; padding: 12px; border-radius: 4px; cursor: pointer; font-size: 16px; }
+        .auth-footer { text-align: center; margin-top: 20px; font-size: 14px; }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <h2 style="text-align: center;">加入會員</h2>
+        <form class="auth-form" id="registerForm">
+            <input type="text" placeholder="輸入姓名" required>
+            <input type="email" placeholder="電子郵件" required>
+            <input type="password" placeholder="設定密碼" required>
+            <input type="password" placeholder="確認密碼" required>
+            <button type="submit" class="auth-btn">完成註冊</button>
+        </form>
+        <div class="auth-footer">
+            已有帳號？ <a href="login.html" style="color: #e5004f;">回登入頁</a>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $('#registerForm').submit(function(e) {
+            e.preventDefault();
+            alert('註冊成功！請重新登入');
+            window.location.href = 'login.html';
+        });
+    </script>
+</body>
+</html>

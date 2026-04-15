@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>衣服銷售網站</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>時尚衣物</h1>
+        <nav>
+            <a href="#products">產品</a>
+            <a href="#cart">購物車</a>
+            <a href="#checkout">結帳</a>
+        </nav>
+    </header>
+
+    <section id="products">
+        <h2>產品列表</h2>
+        <div class="product">
+            <img src="https://images.pexels.com/photos/123123/pexels-photo-123123.jpeg" alt="產品1">
+            <h3>產品名稱</h3>
+            <p>產品描述</p>
+            <p>價格：$1000</p>
+            <button onclick="addToCart('產品名稱', 1000)">加入購物車</button>
+        </div>
+        <!-- 添加更多產品 -->
+    </section>
+
+    <section id="cart">
+        <h2>購物車</h2>
+        <div id="cartItems"></div>
+        <button onclick="checkout()">結帳</button>
+    </section>
+
+    <footer>
+        <p>© 2026 時尚衣物</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

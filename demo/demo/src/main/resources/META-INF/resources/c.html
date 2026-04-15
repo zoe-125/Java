@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>生活用品購物網</title>
+    <link rel="stylesheet" href="c.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+
+<header>
+    <h1>生活用品購物網</h1>
+    <div class="cart">🛒 購物車 (<span id="cart-count">0</span>)</div>
+</header>
+
+<main>
+    <div class="products">
+        <div class="product" data-name="牙刷" data-price="50">
+            <h3>牙刷</h3>
+            <p>價格: $50</p>
+            <button class="add-to-cart">加入購物車</button>
+        </div>
+
+        <div class="product" data-name="洗髮精" data-price="120">
+            <h3>洗髮精</h3>
+            <p>價格: $120</p>
+            <button class="add-to-cart">加入購物車</button>
+        </div>
+
+        <div class="product" data-name="衛生紙" data-price="80">
+            <h3>衛生紙</h3>
+            <p>價格: $80</p>
+            <button class="add-to-cart">加入購物車</button>
+        </div>
+    </div>
+
+    <div class="cart-items">
+        <h2>購物車清單</h2>
+        <ul id="cart-list"></ul>
+        <p>總金額: $<span id="total">0</span></p>
+    </div>
+</main>
+
+<script src="c.js"></script>
+</body>
+</html>
+
+

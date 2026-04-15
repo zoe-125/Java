@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LifeStyle 購物 - 商品列表</title>
+    <link rel="stylesheet" href="static/css/productList.css"> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+<nav class="top-bar">
+    <div class="container-wide">
+        <div class="top-left-links">
+            <a href="index.html"><i class="fas fa-home"></i> 回首頁</a>
+            <a href="#">APP 下載</a>
+        </div>
+        <div class="top-right-links">
+            <a href="register.html">註冊</a>
+            <a href="login.html">登入</a> 
+            <a href="#.html">會員中心</a>
+            <a href="#">查訂單</a>
+            <a href="#">追蹤清單</a>
+            <a href="cart.html" class="cart-link">
+                <i class="fas fa-shopping-cart"></i> 購物車(<span id="cart-count">0</span>)
+            </a>
+        </div>
+    </div>
+</nav>
+
+<header class="main-header">
+    <div class="container-wide">
+        <div class="logo">LifeStyle 購物</div>
+        <div class="search-bar">
+            <input type="text" placeholder="請輸入關鍵字或品號">
+            <button><i class="fas fa-search"></i> 搜尋</button>
+        </div>
+    </div>
+</header>
+
+<div class="container" style="flex-direction: column;">
+    <h2 class="page-title">熱銷商品</h2>
+    <div class="product-grid" id="product-list"></div>
+</div>
+
+<div id="login-modal" class="modal-overlay">
+    <div class="modal-content">
+        <h3 class="modal-title-alert">提示</h3>
+        <p class="modal-text">請先登入，即可查看您的購物車！</p>
+        <div class="modal-buttons">
+            <button id="btn-go-login" class="modal-btn-primary">前往登入</button>
+            <button id="btn-close-modal" class="modal-btn-cancel">取消</button>
+        </div>
+    </div>
+</div>
+
+<div id="logout-confirm-modal" class="modal-overlay">
+    <div class="modal-content">
+        <i class="fas fa-question-circle modal-icon-warn"></i>
+        <h3 class="modal-title">登出確認</h3>
+        <p class="modal-text">確定要登出嗎？</p>
+        <div class="modal-buttons">
+            <button id="btn-logout-cancel" class="modal-btn-cancel">取消</button>
+            <button id="btn-logout-submit" class="modal-btn-confirm">確定</button>
+        </div>
+    </div>
+</div>
+
+<template id="tpl-product-card">
+    <div class="product-card" style="cursor: pointer;">
+        <div class="card-img-wrapper">
+            <img src="" alt="" class="product-img">
+        </div>
+        <div class="product-info">
+            <h3 class="product-title"></h3>
+            <p class="product-description"></p>
+            <div class="price-display-area"></div>
+        </div>
+    </div>
+</template>
+
+<template id="tpl-nav-auth">
+    <div class="auth-group-wrapper">
+        <span id="admin-entry"></span>
+        <span class="welcome-msg"></span>
+        <a href="#" id="btnLogout">登出</a>
+        <a href="#.html">會員中心</a>
+        <a href="#">查訂單</a>
+        <a href="cart.html" class="cart-link">
+            <i class="fas fa-shopping-cart"></i> 購物車(<span id="cart-count">0</span>)
+        </a>
+    </div>
+</template>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="static/js/productList.js"></script>
+</body>
+</html>

@@ -1,0 +1,61 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001-create-members
+      author: zoe
+      preConditions:
+        - onFail: MARK_RAN
+          not:
+            tableExists:
+              tableName: members
+      changes:
+        - createTable:
+            tableName: members
+            remarks: "區分一般會員(USER)與管理員(ADMIN)" 
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: username
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: email
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: password
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: failed_attempts
+                  type: INT
+                  defaultValueNumeric: 0
+              - column:
+                  name: created_at
+                  type: DATETIME
+                  defaultValueComputed: CURRENT_TIMESTAMP
+              - column:
+                  name: last_login_at
+                  type: DATETIME
+              - column:
+                  name: status
+                  type: VARCHAR(20)
+                  defaultValue: "inactive"
+              - column:
+                  name: role
+                  type: VARCHAR(20)
+                  defaultValue: "USER"                
+                  constraints:
+                    nullable: false                             
+              - column:
+                  name: verification_code
+                  type: VARCHAR(100)

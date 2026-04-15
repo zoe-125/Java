@@ -1,0 +1,152 @@
+/* ==========================================================================
+   MOMO 風格整合版 CSS
+   ========================================================================== */
+:root {
+    --momo-pink: #e5004f;
+    --momo-pink-hover: #c40043;
+    --success-green: #2ecc71;
+    --error-red: #e74c3c;
+    --bg-gray: #f7f7f7;
+    --text-dark: #333;
+    --text-gray: #666;
+    --shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-gray);
+    font-family: "Microsoft JhengHei", "PingFang TC", sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+/* --- 外層白色卡片 --- */
+.auth-wrapper {
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    width: 100%;
+    max-width: 380px;
+    text-align: left;
+    transition: transform 0.3s ease;
+}
+
+/* --- 標題效果 --- */
+.auth-title {
+    color: var(--momo-pink);
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 26px;
+    font-weight: 900;
+    letter-spacing: 2px;
+}
+
+/* --- 輸入框群組 --- */
+.input-group {
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--text-dark);
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 15px;
+    transition: all 0.3s ease;
+}
+
+/* 輸入框聚焦狀態 */
+.input-group input:focus {
+    outline: none;
+    border-color: var(--momo-pink);
+    box-shadow: 0 0 5px rgba(229, 0, 79, 0.15);
+}
+
+/* --- MOMO 按鈕整合版 --- */
+.btn-momo {
+    width: 100%;
+    padding: 14px;
+    background-color: var(--momo-pink);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 10px;
+    transition: background-color 0.3s, transform 0.1s;
+}
+
+.btn-momo:hover {
+    background-color: var(--momo-pink-hover);
+}
+
+/* 保留原本好用的點擊縮放感 */
+.btn-momo:active {
+    transform: scale(0.98);
+}
+
+/* --- 底部連結 --- */
+.auth-footer {
+    text-align: center;
+    margin-top: 25px;
+    font-size: 14px;
+    color: var(--text-gray);
+}
+
+.auth-footer a {
+    color: var(--momo-pink);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.auth-footer a:hover {
+    text-decoration: underline;
+}
+
+/* --- 整合版 Toast 訊息 --- */
+#message-toast {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 12px 30px;
+    border-radius: 50px;
+    color: white;
+    font-weight: bold;
+    z-index: 10000;
+    min-width: 280px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    /* 使用較流暢的彈跳動畫 */
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.toast-hidden {
+    opacity: 0;
+    top: -60px !important;
+    pointer-events: none;
+}
+
+.toast-show {
+    opacity: 1;
+    top: 20px !important;
+}
+
+.toast-success { background-color: var(--success-green); }
+.toast-error { background-color: var(--error-red); }

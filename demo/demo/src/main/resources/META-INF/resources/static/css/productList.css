@@ -1,0 +1,241 @@
+/* --- 1. 基礎佈局與頂部導航列 --- */
+.top-bar {
+    background-color: #f3f3f3;
+    border-bottom: 1px solid #ddd;
+    padding: 8px 0;
+    font-size: 0.85rem;
+}
+.top-bar .container-wide { 
+    display: flex; 
+    justify-content: space-between; 
+}
+.top-bar a { 
+    color: #666; 
+    text-decoration: none; 
+    margin-left: 15px; 
+    transition: 0.2s; 
+}
+.top-bar a:hover { 
+    color: #e5004f; 
+    text-decoration: underline; 
+}
+
+/* --- 2. 主 Header & 搜尋列 --- */
+.main-header { 
+    background-color: #fff; 
+    padding: 20px 0; 
+    border-bottom: 1px solid #eee; 
+}
+.main-header .container-wide { 
+    display: flex; 
+    align-items: center; 
+    gap: 40px; 
+}
+.logo { 
+    font-size: 1.8rem; 
+    font-weight: bold; 
+    color: #e5004f; 
+}
+.search-bar { 
+    flex: 1; 
+    display: flex; 
+    max-width: 500px; 
+}
+.search-bar input { 
+    flex: 1; padding: 10px 15px; border: 2px solid #e5004f; 
+    border-radius: 4px 0 0 4px; outline: none; 
+}
+.search-bar button { 
+    background-color: #e5004f; color: white; border: none; 
+    padding: 0 20px; border-radius: 0 4px 4px 0; cursor: pointer; 
+}
+
+/* --- 3. 權限與特殊連結 --- */
+.admin-link {
+    color: #e67e22 !important; /* 顯眼的橘色 */
+    font-weight: bold;
+    text-decoration: none;
+    transition: 0.3s;
+}
+.admin-link:hover {
+    color: #d35400 !important;
+    text-decoration: underline;
+}
+.divider {
+    color: #ddd;
+    margin: 0 10px;
+}
+.cart-link { 
+    font-weight: bold; 
+    color: #27ae60 !important; /* 綠色購物車圖示 */
+}
+
+/* --- 4. 商品列表網格 (一行五格) --- */
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); 
+    gap: 20px;
+    width: 100%;
+    margin-top: 30px;
+}
+.product-card {
+    background: #fff; text-align: center; padding: 10px;
+    cursor: pointer; transition: 0.3s;
+}
+.product-card:hover { box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+.product-card img { width: 100%; height: auto; max-height: 180px; object-fit: contain; margin-bottom: 15px; }
+.product-card .product-title { /* 對應 JS 中的 class */
+    font-size: 0.9rem; color: #333; height: 3em; 
+    overflow: hidden; margin-bottom: 8px; line-height: 1.5; 
+}
+.product-card .product-price { color: #e5004f; font-size: 1.4rem; font-weight: bold; }
+
+/* 售完商品效果 */
+.product-card.sold-out {
+    opacity: 0.7;
+    filter: grayscale(80%); 
+    position: relative;
+}
+.product-card.sold-out::after {
+    content: "SOLD OUT";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-15deg);
+    background: rgba(255, 0, 0, 0.7);
+    color: white;
+    padding: 5px 15px;
+    font-weight: bold;
+    border-radius: 5px;
+    z-index: 10;
+}
+
+/* --- 5. 整合後的彈窗樣式 (Modal) --- */
+
+/* 通用遮罩層 */
+.modal-overlay {
+    display: none; 
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%; 
+    background: rgba(0, 0, 0, 0.5); 
+    z-index: 9999; 
+    justify-content: center; 
+    align-items: center;
+}
+
+/* 彈窗主體 */
+.modal-content {
+    background: white; 
+    padding: 30px; 
+    border-radius: 8px; 
+    text-align: center; 
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); 
+    min-width: 300px;
+}
+
+/* 標題與文字 */
+.modal-title {
+    margin-bottom: 15px; 
+    color: #333;
+    font-size: 1.5rem;
+}
+.modal-title-alert { /* 用於登入提示的紅色標題 */
+    margin-bottom: 15px;
+    color: #e5004f;
+    font-size: 1.5rem;
+}
+.modal-text {
+    margin-bottom: 20px; 
+    color: #666;
+}
+
+/* 圖示樣式 */
+.modal-icon {
+    font-size: 50px; 
+    color: #4ec3e0; 
+    margin-bottom: 15px;
+}
+.modal-icon-warn {
+    font-size: 50px; 
+    color: #f39c12; /* 橘黃色提醒 */
+    margin-bottom: 15px;
+}
+
+/* 按鈕容器與佈局 */
+.modal-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+/* 按鈕樣式組合 */
+.modal-btn-confirm, .modal-btn-primary {
+    background: #4ec3e0; 
+    color: white; 
+    border: none; 
+    padding: 10px 25px; 
+    border-radius: 4px; 
+    cursor: pointer; 
+    font-size: 16px;
+    transition: background 0.3s;
+}
+.modal-btn-confirm:hover, .modal-btn-primary:hover {
+    background: #3eb3d0;
+}
+
+.modal-btn-cancel {
+    background: #eee; 
+    color: #333; 
+    border: none; 
+    padding: 10px 25px; 
+    border-radius: 4px; 
+    cursor: pointer; 
+    font-size: 16px;
+    transition: background 0.3s;
+}
+.modal-btn-cancel:hover {
+    background: #ddd;
+}
+
+/* 管理員上架選單 */
+#admin-menu a {
+    color: #e67e22;
+    font-weight: bold;
+}
+
+#admin-menu .separator {
+    color: #ccc;
+    margin: 0 10px;
+}
+
+/* 使用者歡迎語 */
+.user-welcome {
+    color: #e5004f;
+    font-weight: bold;
+}
+
+/* 售完商品的警示文字 */
+.out-of-stock-label {
+    color: red;
+    font-weight: bold;
+}
+
+/* 伺服器錯誤或空清單提示 */
+.status-msg-center {
+    text-align: center;
+    width: 100%;
+}
+
+.error-msg {
+    color: red;
+    text-align: center;
+}
+
+/* 彈窗顯示控制 */
+.modal-flex {
+    display: flex !important;
+}

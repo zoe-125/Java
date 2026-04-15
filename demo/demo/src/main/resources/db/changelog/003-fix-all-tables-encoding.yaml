@@ -1,0 +1,19 @@
+databaseChangeLog:
+  - changeSet:
+      id: 003-fix-all-tables-encoding
+      author: zoe
+      changes:
+        # 1. 修改資料庫層級的預設編碼（確保未來新建的表都支援中文）
+        - sql:
+            dbms: mariadb, mysql
+            sql: ALTER DATABASE store CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+        # 2. 修改 products 資料表及其所有欄位編碼
+        - sql:
+            dbms: mariadb, mysql
+            sql: ALTER TABLE products CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+        # 3. 修改 members 資料表及其所有欄位編碼
+        - sql:
+            dbms: mariadb, mysql
+            sql: ALTER TABLE members CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;

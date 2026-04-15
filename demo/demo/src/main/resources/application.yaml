@@ -1,0 +1,47 @@
+spring:
+  application:
+    name: demo
+  jpa:
+    database-platform: org.hibernate.dialect.MariaDBDialect
+    properties:
+      hibernate:
+        temp:
+          use_jdbc_metadata_defaults: false
+    show-sql: false
+    hibernate:
+      ddl-auto: none     
+  datasource:
+    # 🚩 修改重點：在網址後方加上了 useUnicode=true&characterEncoding=utf8
+    url: "jdbc:mariadb://192.168.0.217:3306/store?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=utf8"
+    username: root
+    password: yanxu05260802
+    type: org.apache.commons.dbcp2.BasicDataSource
+    dbcp2:
+      initial-size: 15
+      min-idle: 10
+      max-total: 40
+      test-on-borrow: true
+      validation-query: SELECT 1
+      max-wait-millis: 5000
+      max-conn-lifetime-millis: 3600000
+      
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+    enabled: true
+ 
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: djangodtl123@gmail.com
+    password: ZJJZ YDB F JOPV DTVN   
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true  
+file:
+  upload-dir: "D:/JavaProject/UploadImages/"
+
+server:
+  port: 9973

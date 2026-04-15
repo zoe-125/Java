@@ -1,0 +1,552 @@
+/* ==========================================================================
+   1. 基礎全域設定 (Global Styles)
+   ========================================================================== */
+.body {
+    font-family: 'Microsoft JhengHei', sans-serif;
+    margin: 0;
+    background-color: #f6f6f6;
+    color: #333;
+    line-height: 1.5;
+}
+
+.container-wide {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 15px;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 30px auto;
+    display: flex;
+    gap: 40px;
+    background: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+/* ==========================================================================
+   2. 共用元件 (Shared Components: Header, Buttons, Selectors)
+   ========================================================================== */
+
+/* Header 導覽列 */
+.main-header {
+    background-color: #333;
+    color: white;
+    padding: 15px 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.logo { 
+    font-size: 1.4rem; 
+    font-weight: bold; 
+    color: #e5004f; 
+}
+
+.cart-status {
+    background: #e5004f;
+    padding: 6px 18px;
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-left: 0;
+}
+
+.cart-status:hover {
+    background: #c40043;
+}
+
+/* 步序指示器 (購物車頁使用) */
+.step-indicator {
+    font-size: 0.9rem;
+    color: #ccc;
+}
+.step-indicator .active {
+    color: #fff;
+    font-weight: bold;
+}
+
+/* 數量選擇器 */
+.quantity-selector { 
+    display: flex; 
+    border: 1px solid #ccc; 
+    border-radius: 4px; 
+    overflow: hidden; 
+    width: fit-content;
+}
+.qty-btn { 
+    background: #eee; 
+    border: none; 
+    padding: 8px 15px; 
+    cursor: pointer; 
+}
+.qty-btn:hover { background: #ddd; }
+.qty-input { 
+    width: 50px; 
+    text-align: center; 
+    border: none; 
+    outline: none; 
+}
+
+
+/* 按鈕樣式 */
+.btn { 
+    flex: 1; 
+    padding: 15px; 
+    border: none; 
+    border-radius: 6px; 
+    cursor: pointer; 
+    font-weight: bold; 
+    font-size: 16px; 
+    transition: 0.3s; 
+    text-align: center;
+}
+.btn-direct-buy, .btn-checkout { 
+    background: #e5004f; 
+    color: white; 
+}
+.btn-add-cart { 
+    background: #4ec3e0; 
+    color: white; 
+}
+.btn-add-cart:hover { background: #3db2cc; }
+
+/*  售完狀態：讓商品卡片（首頁）與 詳情頁主容器都能套用 */
+.product-card.sold-out, 
+.main-container.sold-out {
+    opacity: 0.8;
+    filter: grayscale(60%);
+    position: relative;
+}
+
+/*  售完狀態：禁止按鈕點擊 */
+.sold-out .btn, 
+.sold-out .qty-btn,
+.sold-out .quantity-selector {
+    pointer-events: none;
+    cursor: not-allowed;
+}
+
+/*  詳情頁專用的 SOLD OUT 字樣浮水印 */
+.main-container.sold-out::after {
+    content: "SOLD OUT";
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-15deg);
+    background: rgba(255, 0, 0, 0.8);
+    color: white;
+    padding: 10px 30px;
+    font-size: 2rem;
+    font-weight: bold;
+    border-radius: 10px;
+    z-index: 999;
+    border: 3px solid white;
+}
+
+/* ==========================================================================
+   3. 產品詳情頁專用 (Product Detail Page)
+   ========================================================================== */
+.product-gallery { 
+	flex: 0 0 380px; 
+}
+
+.main-image-wrapper { 
+	position: relative; 
+	border: 1px solid #eee; 
+	margin-bottom: 15px; 
+}
+
+.main-image-wrapper img { 
+	width: 100%; 
+	display: block; 
+}
+
+.capacity-badge {
+    position: absolute; 
+    top: 15px; left: 15px;
+    background: rgba(0,0,0,0.7); 
+    color: #fff;
+    padding: 4px 12px; 
+    border-radius: 4px; 
+    font-size: 13px;
+}
+
+.thumbnail-list { 
+	display: flex; 
+	gap: 10px; 
+}
+
+.thumb { 
+	width: 70px; 
+	height: 70px; 
+	border: 2px solid #ddd; 
+	cursor: pointer; 
+	object-fit: cover; 
+}
+
+.thumb.active { 
+	border-color: #e5004f; 
+}
+
+.product-details { 
+	flex: 1; 
+}
+
+.tag-pink { 
+	background: #fff0f5; 
+	color: #e5004f; 
+	padding: 4px 10px; 
+	font-size: 13px; 
+	border-radius: 4px; 
+	display: inline-block; 
+}
+
+.product-title { 
+	font-size: 24px; 
+	margin: 15px 0; 
+	line-height: 1.4; 
+}
+
+.price-section { 
+	background: #fdfdfd; 
+	padding: 20px; 
+	border-radius: 8px; 
+	margin: 20px 0; 
+	border: 1px solid #f0f0f0; 
+}
+
+.price-label { 
+	font-size: 0.9rem; 
+	color: #888; 
+}
+
+.market-price { 
+	text-decoration: line-through; 
+	color: #999; 
+	margin: 0 15px 0 5px; 
+}
+
+.current-price { 
+	color: #e5004f; 
+	font-size: 32px; 
+	font-weight: bold; 
+}
+
+.detail-rows .row { 
+	display: flex; 
+	margin-bottom: 15px; 
+	align-items: center; 
+}
+
+.row-label { 
+	width: 100px; 
+	color: #888; 
+}
+
+.row-content { 
+	flex: 1; 
+}
+
+.product-features { 
+	padding-left: 20px; 
+	color: #666; 
+	margin-bottom: 25px; 
+}
+
+.product-features li { 
+	margin-bottom: 5px; 
+}
+
+/* ==========================================================================
+   4. 購物車頁專用 (Shopping Cart Page)
+   ========================================================================== */
+.cart-page { 
+	flex-direction: column; 
+} 
+.page-title { 
+	margin-bottom: 20px; 
+	font-size: 1.8rem; 
+	width: 100%; 
+}
+
+/* 讓父容器對齊頂部，這是 sticky 生效的關鍵 */
+.cart-container {
+    display: flex;
+    gap: 30px;
+    align-items: flex-start; /* 🚩 重要：防止右側被拉伸到跟左側一樣高 */
+}
+
+/* 左側大容器 */
+.cart-left-column {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* 🚩 右側摘要鎖定效果 */
+.cart-summary {
+    flex: 1;
+    background: #fff;
+    padding: 25px;
+    border-radius: 12px;
+    border: 1px solid #ddd;
+    position: sticky;        /* 🚩 鎖定 */
+    top: 20px;               /* 🚩 距離視窗頂部 20px 時固定 */
+    z-index: 10;
+}
+
+.cart-items { 
+	flex: 2; 
+}
+.cart-item {
+    display: flex;
+    align-items: center;
+    background: #fff;
+    padding: 20px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+.cart-item img { 
+	width: 100px; 
+	height: 100px; 
+	object-fit: cover; 
+	border-radius: 4px; 
+	margin-right: 20px; 
+}
+.item-info { 
+	flex: 1; 
+}
+.item-info h4 { 
+	margin: 0 0 5px; 
+	font-size: 1.1rem; 
+}
+.item-info p { 
+	color: #888; 
+	font-size: 0.9rem; 
+	margin: 0; 
+}
+
+.item-price { 
+	font-weight: bold; 
+	color: #e5004f; 
+	width: 120px; 
+	text-align: right; 
+	font-size: 1.1rem; 
+}
+.item-remove { 
+	margin-left: 25px; 
+	color: #ccc; 
+	cursor: pointer; 
+	transition: 0.2s; 
+	font-size: 1.2rem; 
+}
+.item-remove:hover { 
+	color: #e53e3e; 
+}
+
+.cart-summary {
+    flex: 1;
+    background: #fff;
+    padding: 25px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    position: sticky;
+    top: 100px; 
+}
+.cart-summary h3 { 
+	margin-top: 0; 
+	border-bottom: 1px solid #eee; 
+	padding-bottom: 10px; 
+}
+.summary-row { 
+	display: flex; 
+	justify-content: space-between; 
+	margin-bottom: 15px; 
+}
+.summary-row.total { 
+	font-size: 1.4rem; 
+	font-weight: bold; 
+	color: #e5004f; 
+	margin-top: 10px; 
+}
+.summary-row.promo { color: #e5004f; }
+
+.continue-shopping { 
+	display: block; 
+	text-align: center; 
+	margin-top: 15px; 
+	color: #666; 
+	text-decoration: none; 
+	font-size: 0.9rem; 
+}
+.continue-shopping:hover { 
+	text-decoration: underline; 
+}
+
+/* 訂購人資訊區塊樣式 (仿圖中風格) */
+.checkout-info-section {
+    background: #fff;
+    padding: 25px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+.checkout-info-section h3 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+.form-row {
+    display: flex;
+    gap: 15px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+    flex: 1;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+.form-group input:focus {
+    border-color: #e5004f;
+    outline: none;
+}
+
+
+/* 總金額樣式 */
+.total-label {
+    margin-left: 30px; 
+    width:100px;
+}
+
+.total-amount-display {
+    font-size: 1rem;
+    flex: 1;
+}
+
+#render-total-amount {
+    margin-left: 5px;
+}
+
+.modal-overlay {
+    position: fixed; 
+    top: 0; left: 0; 
+    width: 100%; 
+    height: 100%;
+    background: rgba(0,0,0,0.5); 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    z-index: 1000;
+}
+.modal-content {
+    background: #fff; 
+    padding: 30px; 
+    border-radius: 12px; 
+    text-align: center; 
+    max-width: 400px; 
+    width: 90%;
+}
+.modal-buttons { 
+	display: flex; 
+	gap: 10px; 
+	margin-top: 20px; 
+}
+.btn-secondary { 
+	flex: 1; 
+	padding: 10px; 
+	background: #eee; 
+	border: none; 
+	border-radius: 6px; 
+	cursor: pointer; 
+}
+.btn-danger { 
+	flex: 1; 
+	padding: 10px; 
+	background: #e5004f; 
+	color: white; 
+	border: none; 
+	border-radius: 6px; 
+	cursor: pointer; 
+}
+
+
+/* 讓右側元素水平排列 */
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 20px; /* 控制首頁與購物車之間的距離 */
+}
+
+/* 導航選單樣式 */
+.nav-menu {
+    display: flex;
+    align-items: center;
+}
+
+/* 導航項目的文字樣式 (不像按鈕，像連結) */
+.nav-item {
+    color: white;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 5px; /* 圖標與文字的距離 */
+}
+
+.nav-item:hover {
+    color: #e5004f; /* 懸停時變色，與 Logo 呼應 */
+}
+
+
+/* 響應式調整 */
+@media (max-width: 768px) {
+    .qty-row {
+        flex-wrap: wrap;
+    }
+    .total-label {
+        margin-left: 0;
+        margin-top: 10px;
+    }
+    .total-amount-display {
+        margin-top: 10px;
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .container, .cart-container { flex-direction: column; }
+    .product-gallery { flex: 0 0 auto; width: 100%; }
+    .cart-summary { position: static; }
+    .cart-item { flex-wrap: wrap; }
+    .item-price { width: 100%; text-align: left; margin-top: 10px; }
+}

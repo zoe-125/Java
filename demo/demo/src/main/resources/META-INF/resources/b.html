@@ -1,0 +1,154 @@
+<!DOCTYPE html> 
+<html lang="zh-Hant"> 
+<head> 
+<meta charset="utf-8"> 
+<meta name="viewport" content="width=device-width,initial-scale=1"> 
+<title>jQuery 03｜DOM 走訪與篩選</title> 
+<style> 
+  body{font-family:system-ui,-apple-system,"Noto Sans TC",sans-serif;margin:20px;line-height:1.6} 
+  button{padding:.3rem .7rem;border:1px solid #e5e7eb;background:#fff;border-radius:.4rem;cursor:pointer;font-size:13px} 
+  pre{white-space:pre-wrap;border:1px dashed #e5e7eb;border-radius:8px;padding:8px;min-height:60px} 
+  table{border-collapse:collapse;width:100%;max-width:760px;margin-bottom:10px} 
+  th,td{border:1px solid #e5e7eb;padding:4px 6px;font-size:14px} 
+  tr.is-hot{background:#fef3c7} 
+  tr.is-zero{background:#fee2e2} 
+  td.qty{text-align:right} 
+</style> 
+</head> 
+<body> 
+<h1>jQuery 03｜DOM 走訪與篩選</h1> 
+<p class="muted">⽰範：closest/find/children/prev/next/siblings/has/filter/is。</p>
+
+<table id="orders"> 
+  <thead> 
+    <tr><th>編號</th><th>品項</th><th class="qty">數量</th><th>備註</th><th>操作</th></tr> 
+  </thead> 
+  <tbody> 
+    <tr class="is-hot" data-id="201"> 
+      <td>201</td><td class="name">保溫杯</td><td class="qty">2</td><td class="note">熱賣</td> 
+      <td> 
+        <button class="btn-info">查看</button> 
+        <button class="btn-plus">+1</button> 
+        <button class="btn-minus">-1</button> 
+      </td> 
+    </tr> 
+    <tr data-id="202"> 
+      <td>202</td><td class="name">隨⾏杯</td><td class="qty">1</td><td class="note"></td> 
+      <td> 
+        <button class="btn-info">查看</button> 
+        <button class="btn-plus">+1</button> 
+        <button class="btn-minus">-1</button> 
+      </td> 
+    </tr> 
+    <tr class="is-zero" data-id="203"> 
+	    <td>203</td><td class="name">濾泡杯</td><td class="qty">0</td><td class="note">缺貨</td> 
+		<td>
+	        <button class="btn-info">查看</button> 
+	        <button class="btn-plus">+1</button> 
+	        <button class="btn-minus">-1</button> 
+       </td> 
+   </tr>
+  </tbody>
+ </table>   
+ 
+ 
+ <p> 
+  <button id="run">批次⽰範</button> 
+  <button id="clear">清空輸出</button> 
+</p> 
+<pre id="out"></pre> 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script> 
+<script> 
+(function(){ 
+  'use strict'; 
+  var out = document.getElementById('out'); 
+  function log(){ out.textContent += Array.prototype.join.call(arguments,' ') + '\n'; } 
+  function group(t){ log('\\n— ' + t + ' —'); } 
+  // d1: 從 table 走到 rows，再⽤ children/find 取欄位 
+  function d1(){ 
+    group('d1) children / find：從表到欄位'); 
+    var $table = $('#orders'); 
+    var $rows  = $table.find('tbody tr'); 
+    $rows.each(function(i, el){ 
+      var $row = $(this); 
+      var id   = $row.data('id'); 
+      var name = $row.find('.name').text(); 
+      var qty  = parseInt($row.children('.qty').text(), 10); 
+      log('row', i, 'id=', id, 'name=', name, 'qty=', qty); 
+    }); 
+  } 
+  // d2: closest：從按鈕走回該列 
+  function d2(){ 
+    group('d2) closest：從按鈕走回 tr'); 
+    var $btn = $('#orders tbody tr').eq(0).find('.btn-info');
+    var $row = $btn.closest('tr'); 
+    log('btn 所在列 id =', $row.data('id'), ' name =', $row.find('.name').text()); 
+  }
+  
+  
+ // d3: prev / next / siblings：上下列移動 
+  function d3(){ 
+    group('d3) prev / next / siblings'); 
+    var $zero = $('#orders tbody tr.is-zero'); 
+    var $prev = $zero.prev(); 
+    var $next = $zero.next(); 
+    log('零庫存列 id =', $zero.data('id')); 
+    if ($prev.length) log('上⼀列 id =', $prev.data('id')); 
+    else log('上⼀列 = 無'); 
+    if ($next.length) log('下⼀列 id =', $next.data('id')); 
+    else log('下⼀列 = 無'); 
+    var siblingIds = $zero.siblings().map(function(i, el){ 
+      return $(el).data('id'); 
+    }).get(); 
+    log('其他兄弟列 id =', siblingIds.join(',')); 
+  } 
+  // d4: has / filter / is：搭配走訪做篩選 
+/*  function d4(){ 
+    group('d4) has / filter / is：有備註的列與缺貨列'); 
+    var $rows = $('#orders tbody tr'); 
+    var $hasNote = $rows.has('.note:not(:empty)'); 
+    var $lack = $rows.filter(function(i, el){ 
+      var qty = parseInt($(el).find('.qty').text(), 10); 
+      return qty === 0; 
+    }); 
+    var anyHot = $rows.is('.is-hot'); 
+    log('有備註的列數 =', $hasNote.length); 
+    log('缺貨列數 =', $lack.length); 
+    log('是否存在 is-hot 列 =', anyHot);
+  }*/
+  
+  // 事件⽰範：這是實戰 pattern：從按鈕走到 row 再改 qty 
+/*  function wireEvents(){ 
+    $('#orders').on('click', '.btn-plus, .btn-minus, .btn-info', function(e){ 
+      var $btn = $(this); 
+      var $row = $btn.closest('tr'); 
+      var id   = $row.data('id'); 
+      var name = $row.find('.name').text(); 
+      if ($btn.hasClass('btn-info')){ 
+        log('點擊查看：id=' + id + ' name=' + name); 
+        return; 
+      } 
+      var $qtyCell = $row.find('.qty'); 
+      var qty = parseInt($qtyCell.text(), 10) || 0; 
+      if ($btn.hasClass('btn-plus')) qty++; 
+      if ($btn.hasClass('btn-minus')) qty = Math.max(0, qty - 1); 
+      $qtyCell.text(qty); 
+      $row.toggleClass('is-zero', qty === 0); 
+      log('更新數量：id=' + id + ' => qty=' + qty); 
+    }); 
+  } */
+  function runAll(){ 
+    out.textContent = ''; 
+    d1(); d2(); d3(); d4(); 
+    log('\\n提⽰：試試點下⾯表格裡的「查看 / +1 / -1」按鈕，看事件裡怎麼⽤ closest/find。'); 
+  } 
+  document.getElementById('run').onclick = runAll; 
+  document.getElementById('clear').onclick = function(){ out.textContent=''; }; 
+  wireEvents(); 
+})();  
+</script>
+</body>
+</html> 	    
+       
+	        
+					

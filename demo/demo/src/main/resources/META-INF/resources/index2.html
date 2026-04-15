@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>生活購物網</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<h2 class="title">熱銷商品</h2>
+
+<div class="product-container">
+
+    <!-- 商品1 -->
+    <div class="product">
+        <span class="tag">今日限定</span>
+        <img src="https://via.placeholder.com/180">
+        <p class="name">【Whirlpool 惠而浦】除濕機</p>
+        <p class="price">$6,944</p>
+        <button class="btn">加入購物車</button>
+    </div>
+
+    <!-- 商品2 -->
+    <div class="product">
+        <img src="https://via.placeholder.com/180">
+        <p class="name">【Panasonic】吹風機</p>
+        <p class="price">$4,990</p>
+        <button class="btn">加入購物車</button>
+    </div>
+
+    <!-- 商品3 -->
+    <div class="product">
+        <img src="https://via.placeholder.com/180">
+        <p class="name">【Philips】空氣清淨機</p>
+        <p class="price">$6,990</p>
+        <button class="btn">加入購物車</button>
+    </div>
+
+    <!-- 商品4 -->
+    <div class="product">
+        <span class="tag blue">熱銷</span>
+        <img src="https://via.placeholder.com/180">
+        <p class="name">【Panasonic】吸塵器</p>
+        <p class="price">$7,590</p>
+        <button class="btn">加入購物車</button>
+    </div>
+
+    <!-- 商品5 -->
+    <div class="product">
+        <img src="https://via.placeholder.com/180">
+        <p class="name">【BRITA】濾水壺</p>
+        <p class="price">$15,688</p>
+        <button class="btn">加入購物車</button>
+    </div>
+
+</div>
+
+<<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="main.js"></script>
+
+</body>
+</html>
+
+
+
+
+
+
+<!-- 原始product.html--->
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>產品詳情頁 - 動態載入版</title>
+    <link rel="stylesheet" href="product.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+<!--加入這段 -->
+<header>
+    <div class="add-to-cart">🛒 購物車 (<span id="cart-count">0</span>)</div>
+</header>
+
+<div class="main-container container">
+    <div class="product-gallery">
+        <div class="main-image-wrapper">
+            <img src="" alt="產品主圖" id="mainImage">
+            <span class="capacity-badge" id="render-capacity"></span>
+        </div>
+        <div class="thumbnail-list" id="render-thumbnails">
+            </div>
+    </div>
+
+    <div class="product-details">
+        <div id="render-promo-tags"></div>
+        
+        <h1 class="product-title" id="render-title"></h1>
+        
+        <ul class="product-features" id="render-features">
+            </ul>
+        
+        <div class="price-section">
+            <span class="price-label">市售價</span>
+            <span class="market-price" id="render-market-price"></span>
+            <span class="price-label promo">促銷價</span>
+            <span class="current-price">$ <span id="render-current-price"></span></span>
+        </div>
+
+        <div class="detail-rows">
+            <div class="row">
+                <span class="row-label">品牌名稱</span>
+                <span class="row-content" id="render-brand"></span>
+            </div>
+            <div class="row">
+                <span class="row-label">保固資訊</span>
+                <span class="row-content" id="render-warranty"></span>
+            </div>
+            <div class="row qty-row">
+                <span class="row-label">數量</span>
+                <div class="quantity-selector">
+                    <button class="qty-btn minus">-</button>
+                    <input type="number" class="qty-input" value="1" min="1">
+                    <button class="qty-btn plus">+</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="action-buttons">
+            <button class="btn btn-direct-buy">直接購買</button>
+            <button class="btn btn-add-cart"><i class="fas fa-shopping-cart"></i> 放入購物車</button>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="product.js"></script>
+</body>
+</html>
+
+
+
+
+<!--最原本的ProductResource,如果有壞可以使用此 -->
+package com.example.demo.resource;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class ProductResource2 {
+	@GetMapping(path="/api/products/{id}",produces="application/json")
+	public String getProduct(@PathVariable String id) {
+		System.out.println(id);
+		if ("1".equals(id)) {
+			return goods1();
+		} else if ("2".equals(id)) {
+			return goods2();
+		} else if ("3".equals(id)) {
+			return goods3();
+		} else {
+			return "";
+		}
+			
+	}	
+		
+		
+	private String goods1() {
+		return  """
+				{
+        id: "14693841",
+        brand: "TECO 東元",
+        title: "白大廚 23L 三合一多功能氣炸烤微波爐",
+        model: "YM2302CBW",
+        capacity: "23L",
+        promoText: "氣炸+燒烤+微波，一機搞定",
+        marketPrice: 7990,
+        currentPrice: 6990,
+        features: [
+            "23L 大容量，烤全雞也 OK",
+            "10 道自動料理 + 9 道氣炸菜單",
+            "附烤盤、高/矮烤架，方便烤製"
+        ],
+        images: [
+            "https://image.momoshop.com.tw/goodsimg/0014/693/841/14693841_L.webp",
+            "https://image.momoshop.com.tw/goodsimg/0014/693/841/14693841_S.webp"
+        ],
+        warranty: "1 年保固期"
+    }
+				""";
+			
+	}
+	
+	private String goods2() {
+		return  """
+				{
+        id: "25647666",
+        brand: "TECO 東元",
+        title: "吹風機",
+        model: "ND76544",
+        capacity: "150W",
+        promoText: "速乾",
+        marketPrice: 8990,
+        currentPrice: 7990,
+        features: [
+            "風力強大,快速吹乾",
+            "三段式風力",
+            "提供冷、溫、熱溫度"
+        ],
+        images: [
+            "https://image.momoshop.com.tw/goodsimg/0014/693/841/14693841_L.webp",
+            "https://image.momoshop.com.tw/goodsimg/0014/693/841/14693841_S.webp"
+        ],
+        warranty: "1 年保固期"
+    }
+				""";
+			
+	}
+	
+	private String goods3() {
+		return  """
+				{
+        id: "35741895",
+        brand: "TECO 東元",
+        title: "省電冰箱",
+        model: "AC53140",
+        capacity: "150W",
+        promoText: "省電",
+        marketPrice: 9990,
+        currentPrice: 8990,
+        features: [
+            "空間容量大",
+            "溫度自動調節",
+            "變頻冰箱超省電"
+        ],
+        images: [
+            "https://image.momoshop.com.tw/goodsimg/0014/693/841/14693841_L.webp",
+            "https://image.momoshop.com.tw/goodsimg/0014/693/841/14693841_S.webp"
+        ],
+        warranty: "1 年保固期"
+    }
+				""";
+			
+	}
+}

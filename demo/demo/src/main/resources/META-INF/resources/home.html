@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商品管理系統 - 上架商品</title>
+    <link rel="stylesheet" href="/static/css/newStyle.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">    
+</head>
+<body>
+
+<div class="container">
+    <h2><i class="fas fa-box-open"></i> 商品上架管理</h2>
+    
+    <div class="form-group">
+        <label>商品名稱</label>
+        <input type="text" id="title" placeholder="請輸入商品完整標題">
+    </div>
+
+    <div class="form-group">
+        <label>商品分類</label>
+        <input type="text" id="category" placeholder="例如：精品咖啡、器具">
+    </div>
+
+    <div class="form-group">
+        <label>商品價格 (TWD)</label>
+        <input type="number" id="price" placeholder="請輸入金額">
+    </div>
+
+	<!--新增庫存欄位 -->
+	<div class="form-group">
+    	<label>商品庫存數量</label>
+    	<input type="number" id="stock" placeholder="請輸入庫存數量 (例如：50)" value="0">
+	</div>
+
+    <div class="form-group">
+        <label>商品描述</label>
+        <textarea id="description" placeholder="請詳細描述商品的特色..."></textarea>
+    </div>
+
+    <div class="form-group">
+        <label>商品圖片上傳</label>
+        <input type="file" id="imageFile" accept="image/jpeg, image/png, image/jpg">
+        
+        <div id="imagePreview" style="margin-top: 10px; display: none; text-align: center;">
+            <p style="font-size: 12px; color: #666;">圖片預覽：</p>
+            <img src="" alt="預覽" style="max-width: 100%; height: 150px; border-radius: 8px; border: 1px solid #ddd; object-fit: cover;">
+        </div>
+    </div>
+	
+	<div class="button-group">
+    	<button type="button" id="backBtn" class="btn-secondary">返回</button>
+	    <button type="button" id="submitBtn">確認上架</button>
+	</div>
+
+    
+    <div id="message" style="margin-top: 15px; padding: 10px; border-radius: 5px; display: none;"></div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="/static/js/newScript.js"></script>
+</body>
+</html>

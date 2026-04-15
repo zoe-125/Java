@@ -1,0 +1,187 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f7f6;
+    padding: 20px;
+    color: #333;
+}
+
+.container {
+    max-width: 800px;
+    margin: auto;
+}
+
+/* 修改 header，讓標題與按鈕群組兩端對齊 */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #eee;
+}
+
+/* 按鈕群組的容器，讓內部的按鈕水平排列 */
+.nav-actions {
+    display: flex;
+    gap: 12px; /* 兩個按鈕之間的間距 */
+    align-items: center;
+}
+
+/* 確保 h2 原本的 margin 不會干擾排版 */
+.header h2 {
+    margin: 0;
+}
+
+/* 商品卡片樣式 */
+.product-card {
+    display: flex;
+    align-items: center;
+    background: white;
+    border: none;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    transition: transform 0.2s;
+}
+
+.product-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+}
+
+.product-img {
+    width: 130px;
+    height: 130px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-right: 20px;
+    background-color: #eee;
+}
+
+.product-info {
+    flex-grow: 1;
+}
+
+.product-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0 0 8px 0;
+    color: #2c3e50;
+}
+
+.product-price {
+    color: #7f8c8d;
+    font-size: 1rem;
+    margin-bottom: 12px;
+}
+
+.bottom-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.category-tag {
+    background: #e1f5fe;
+    color: #039be5;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+}
+
+.total-price {
+    color: #d11a59;
+    font-size: 1.4rem;
+    font-weight: bold;
+}
+
+/* 通用按鈕樣式 (優化原本的樣式) */
+.back-home-btn, .add-product-btn {
+    text-decoration: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px; /* 圖示與文字的距離 */
+}
+
+/* 回首頁按鈕顏色 (設為深藍或深灰) */
+.back-home-btn {
+    background-color: #34495e;
+    color: white;
+}
+
+.back-home-btn:hover {
+    background-color: #2c3e50;
+    transform: translateY(-2px); /* 稍微飄起的效果 */
+}
+
+/* 新增商品按鈕顏色 (維持綠色) */
+.add-product-btn {
+    background-color: #27ae60;
+    color: white;
+}
+
+.add-product-btn:hover {
+    background-color: #219150;
+    transform: translateY(-2px);
+}
+/* 刪除按鈕 */
+.delete-btn {
+    background: #fff5f5;
+    border: 1px solid #ffe3e3;
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    cursor: pointer;
+    color: #ff8787;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 15px;
+    transition: all 0.2s;
+}
+
+.delete-btn:hover {
+    background: #fff5f5;
+    color: #fa5252;
+    border-color: #ffa8a8;
+    transform: scale(1.1);
+}
+
+/* 新增：商品描述樣式 */
+.product-description {
+    font-size: 0.9rem;
+    color: #666;
+    margin: 8px 0;
+    line-height: 1.4;
+}
+
+/* 修改按鈕樣式 */
+.edit-btn {
+    background: #f0f7ff;
+    border: 1px solid #d0e7ff;
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    cursor: pointer;
+    color: #007bff;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 10px;
+    transition: all 0.2s;
+}
+
+.edit-btn:hover {
+    background: #007bff;
+    color: white;
+    transform: scale(1.1);
+}
+
