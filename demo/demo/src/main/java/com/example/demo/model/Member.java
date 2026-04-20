@@ -38,6 +38,9 @@ public class Member {
     @Column(name = "verification_code")
     private String verificationCode;
     
+//    private String phone;
+//    private String address;
+    
 
 
     // 1. 無參數建構子 (JPA 必備)
@@ -117,7 +120,7 @@ public class Member {
     public void setRole(String role) { 
     	this.role = role; 
     	}
-
+  
     public String getVerificationCode() { 
     	return verificationCode; 
     	}
@@ -126,6 +129,24 @@ public class Member {
     	}
     
     
+//    public String getPhone() {
+//        return phone;
+//    }
+//
+//    public String getAddress() {
+//        return address;
+//    }
+//    
+//    public void setPhone(String phone) {
+//        this.phone = phone;
+//    }
+//
+//    public void setAddress(String address) {
+//        this.address = address;
+//    }
+   
+    
+
 }
 	
 

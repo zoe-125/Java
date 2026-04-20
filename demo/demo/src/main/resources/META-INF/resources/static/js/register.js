@@ -23,8 +23,8 @@ $(document).ready(function() {
             return;
         }
 
-        if (password.length < 6) {
-            showToast("密碼長度至少需 6 位字元", "error");
+        if (password.length < 8) {
+            showToast("密碼長度至少需 8 位字元", "error");
             return;
         }
 
@@ -50,7 +50,7 @@ $(document).ready(function() {
             success: function(response) {
                 // 如果後端回傳的訊息包含「成功」
                 if (response.includes("成功")) {
-                	// 🚩 修改處：增加跳轉提示訊息
+                	//  修改處：增加跳轉提示訊息
                     showToast(response + " 正在導向登入頁面...", "success");
                     
                     //showToast(response, "success");

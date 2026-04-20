@@ -1,3 +1,11 @@
+.container-wide, .container {
+    max-width: 1200px; /* 您可以根據喜好調整，通常 1200px 是舒適的寬度 */
+    margin: 0 auto;    /* 🚩 關鍵：自動置中 */
+    padding: 0 20px;   /* 預留左右間距，避免手機版貼邊 */
+    width: 100%;
+    box-sizing: border-box;
+}
+
 /* --- 1. 基礎佈局與頂部導航列 --- */
 .top-bar {
     background-color: #f3f3f3;
@@ -8,6 +16,7 @@
 .top-bar .container-wide { 
     display: flex; 
     justify-content: space-between; 
+    align-items: center;
 }
 .top-bar a { 
     color: #666; 
@@ -29,17 +38,24 @@
 .main-header .container-wide { 
     display: flex; 
     align-items: center; 
-    gap: 40px; 
+    justify-content: flex-start;
+    gap: 40px;
+    max-width: 1200px;        /* 🚩 關鍵 3：縮小最大寬度，讓內容更集中 */
+    margin: 0 auto; 
+    padding: 0 20px;             /* 🚩 加上這行，確保左邊距與商品列表完全一致 */
+    box-sizing: border-box;
 }
 .logo { 
     font-size: 1.8rem; 
     font-weight: bold; 
-    color: #e5004f; 
+    color: #e5004f; 1
+    white-space: nowrap;
+    margin: 0;
 }
 .search-bar { 
     flex: 1; 
     display: flex; 
-    max-width: 500px; 
+    max-width: 600px; 
 }
 .search-bar input { 
     flex: 1; padding: 10px 15px; border: 2px solid #e5004f; 
@@ -75,20 +91,83 @@
     display: grid;
     grid-template-columns: repeat(5, 1fr); 
     gap: 20px;
-    width: 100%;
-    margin-top: 30px;
 }
 .product-card {
-    background: #fff; text-align: center; padding: 10px;
-    cursor: pointer; transition: 0.3s;
+    background: #fff; 
+    text-align: center; 
+    padding: 15px; /* 增加一點內距讓視覺更平衡 */
+    cursor: pointer; 
+    transition: 0.3s;
+    border: 1px solid #eee; /* 增加微弱邊框 */
+    display: flex;
+    flex-direction: column;
 }
-.product-card:hover { box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-.product-card img { width: 100%; height: auto; max-height: 180px; object-fit: contain; margin-bottom: 15px; }
-.product-card .product-title { /* 對應 JS 中的 class */
-    font-size: 0.9rem; color: #333; height: 3em; 
-    overflow: hidden; margin-bottom: 8px; line-height: 1.5; 
+.product-card:hover { 
+	box-shadow: 0 5px 15px rgba(0,0,0,0.1); 
 }
-.product-card .product-price { color: #e5004f; font-size: 1.4rem; font-weight: bold; }
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* 讓「熱銷商品」標題居中 */
+    padding-top: 40px;
+    padding-bottom: 60px;
+}
+
+.page-title {
+    width: 100%;    
+    text-align: left;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+    margin-top: 40px;
+    margin-bottom: 20px;
+    padding-left: 10px;    
+    margin: 30px 0;
+}
+
+/* 統一圖片容器大小 */
+.card-img-wrapper {
+    width: 100%;
+    height: 180px; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    margin-bottom: 15px;
+    background-color: #f9f9f9; 
+}
+
+.product-card img { 
+    width: 100%; 
+    height: 100%; 
+    object-fit: contain; /* 🚩 關鍵：確保圖片在容器內完整顯示且不變形 */
+    padding: 5px; /* 避免圖片貼邊 */
+}
+
+.product-card .product-title { 
+    font-size: 0.95rem; 
+    color: #333; 
+    height: 2.8em; /* 固定兩行高度 */
+    overflow: hidden; 
+    margin-bottom: 8px; 
+    line-height: 1.4; 
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* 最多顯示兩行 */
+    -webkit-box-orient: vertical;
+}
+
+
+/* 修改價格區域對齊 */
+.price-display-area {
+    margin-top: auto; /* 將價格推至底部對齊 */
+}
+
+.product-card .product-price { 
+	color: #e5004f; 
+	font-size: 1.3rem; 
+	font-weight: bold; 
+}
 
 /* 售完商品效果 */
 .product-card.sold-out {
@@ -110,7 +189,7 @@
     z-index: 10;
 }
 
-/* --- 5. 整合後的彈窗樣式 (Modal) --- */
+/* 彈窗樣式 (Modal) --- */
 
 /* 通用遮罩層 */
 .modal-overlay {

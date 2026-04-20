@@ -44,4 +44,4 @@ file:
   upload-dir: "D:/JavaProject/UploadImages/"
 
 server:
-  port: 9973
+  port: 8001

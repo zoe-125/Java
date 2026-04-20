@@ -11,18 +11,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/auth") // 設定統一的基礎路徑
+@RequestMapping("/api/auth") 
 public class AuthController {
 
     private final MemberService memberService;
     private final MemberRepository memberRepository;
-    private final BCryptPasswordEncoder passwordEncoder; // ✅ 2. 定義加密器
+    private final BCryptPasswordEncoder passwordEncoder; 
     
-    // 🚩 只需要注入 MemberService
     public AuthController(MemberService memberService, MemberRepository memberRepository) {
     	this.memberService = memberService;
         this.memberRepository = memberRepository;    	
-        this.passwordEncoder = new BCryptPasswordEncoder(); // ✅ 3. 初始化加密器
+        this.passwordEncoder = new BCryptPasswordEncoder(); 
     }
 
     /**
@@ -47,19 +46,21 @@ public class AuthController {
                     return ResponseEntity.status(403).body("錯誤次數過多，帳號已被鎖定");
                 }
             	
-            	
                 // 2. 比對密碼
                 if (passwordEncoder.matches(request.password(), member.getPassword())) {                	
-                	// 🚩 這裡新增：更新最近登入時間
+                	// 更新最近登入時間
                     memberService.updateLastLoginTime(member);
                     // 登入成功：歸零錯誤次數
                     memberService.resetFailedAttempts(member); 
                                         
-                    // 🚩 封裝回傳給前端的資料
+                    // 🚩 整合後的封裝：確保包含 id, username, role, email
                     Map<String, Object> response = new HashMap<>();
-                    response.put("username", member.getUsername());
-                    response.put("userRole", member.getRole()); // 這裡對應你的 Member.java
+                    response.put("id", member.getId());           // 對應 loginUser.id
+                    response.put("username", member.getUsername()); // 對應 loginUser.username
+                    response.put("role", member.getRole());       // 對應 loginUser.role
+                    response.put("email", member.getEmail());     // 🚩 這裡補上了信箱！
                     response.put("status", member.getStatus());
+                    
                     return ResponseEntity.ok(response);
                 } else {
                 	// 密碼錯誤：增加錯誤次數
@@ -88,13 +89,12 @@ public class AuthController {
     @PostMapping("/reset-password")
     public ResponseEntity<?> resetPassword(@RequestBody Map<String, String> request) {
         String email = request.get("email");
-        String newPassword = request.get("password"); // 對應前端傳送的 key 是 password
+        String newPassword = request.get("password"); 
 
         if (email == null || newPassword == null) {
             return ResponseEntity.status(400).body("資料缺失");
         }
 
-        // 呼叫 Service 執行重設與解鎖邏輯
         String result = memberService.resetPasswordAndUnlock(email, newPassword);
 
         if (result.contains("成功")) {
@@ -103,5 +103,5 @@ public class AuthController {
             return ResponseEntity.status(400).body(result);
         }
     }
-
 }
+

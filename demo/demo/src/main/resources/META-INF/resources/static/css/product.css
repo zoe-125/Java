@@ -304,6 +304,17 @@
     z-index: 10;
 }
 
+.cart-summary-buttons {
+    display: flex;       /* 🚩 啟用彈性佈局讓子元素並排 */
+    gap: 10px;          /* 🚩 設定按鈕之間的間距 */
+    margin-top: 20px;
+}
+
+.cart-summary-buttons .btn-checkout {
+    flex: 2;            /* 🚩 讓結帳按鈕佔比較寬的比例 (例如 2:1) */
+    margin: 0;          /* 移除可能的預設邊距 */
+}
+
 .cart-items { 
 	flex: 2; 
 }
@@ -629,4 +640,28 @@
 
 .btn-cancel:hover, .btn-confirm:hover {
     opacity: 0.8;
+}
+
+.cart-item.locked {
+    background-color: #f9f9f9;
+    opacity: 0.8;
+}
+
+.cart-summary-buttons .continue-shopping {
+    flex: 1;            /* 🚩 佔比較窄的比例 */
+    display: flex;      /* 為了讓文字在裡面垂直水平居中 */
+    align-items: center;
+    justify-content: center;
+    background-color: #eee; /* 給它一個淺灰色背景 */
+    color: #333;
+    border-radius: 6px;
+    margin: 0;
+    text-decoration: none;
+    font-size: 0.9rem;
+    white-space: nowrap; /* 🚩 防止文字換行 */
+}
+
+.cart-summary-buttons .continue-shopping:hover {
+    background-color: #ddd;
+    text-decoration: none;
 }

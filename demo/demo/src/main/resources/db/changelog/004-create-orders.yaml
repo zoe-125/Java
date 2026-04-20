@@ -1,0 +1,121 @@
+databaseChangeLog:
+  - changeSet:
+      id: 004-create-orders.yaml
+      author: zoe
+      validCheckSum: ANY
+      changes:
+        # 1. 建立 order 表 (訂單主表)
+        - createTable:
+            tableName: orders
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: members_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: order_number
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: total_amount
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: phone
+                  type: varchar(20)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: shipping_address
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: status
+                  type: varchar(20)
+                  defaultValue: PENDING
+              - column:
+                  name: created_at
+                  type: datetime
+                  defaultValueComputed: CURRENT_TIMESTAMP
+
+        # 2. 建立 order_item 表 (訂單明細表)
+        - createTable:
+            tableName: order_item
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: order_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: products_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: product_name
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: purchase_price
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: quantity
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: subtotal
+                  type: int
+                  constraints:
+                    nullable: false
+
+        # ---------------------------------------------------
+        # 3. 設定所有外鍵關聯 (修正：補上你圖中要求的所有 FK)
+        # ---------------------------------------------------
+
+        # A. 訂單關聯到會員
+        - addForeignKeyConstraint:
+            baseTableName: orders
+            baseColumnNames: members_id
+            constraintName: fk_order_member
+            referencedTableName: members  # <--- 請確認你的會員表名是 members 還是 users
+            referencedColumnNames: id
+
+        # B. 明細關聯到訂單主表
+        - addForeignKeyConstraint:
+            baseTableName: order_item
+            baseColumnNames: order_id
+            constraintName: fk_order_item_order
+            referencedTableName: orders
+            referencedColumnNames: id
+
+        # C. 明細關聯到商品
+        - addForeignKeyConstraint:
+            baseTableName: order_item
+            baseColumnNames: products_id
+            constraintName: fk_order_item_product
+            referencedTableName: products # <--- 指向你的商品表
+            referencedColumnNames: id

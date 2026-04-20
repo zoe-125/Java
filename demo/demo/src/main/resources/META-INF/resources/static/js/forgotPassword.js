@@ -10,16 +10,16 @@ $(document).ready(function() {
         }
 
         $.ajax({
-            url: "/api/auth/verify-email", // 🚩 需在後端新增此 API
+            url: "/api/auth/verify-email", // 
             type: "POST",
             contentType: "application/json",
             data: JSON.stringify({ email: email }),
             success: function(response) {
-                // 假設後端找到人回傳成功
+                
                 showToast("驗證成功！請設定新密碼", "success");
                 $("#btn-verify").text("驗證成功").prop("disabled", true).css("background-color", "#2ecc71");
-                $("#email").prop("readonly", true); // 鎖定 Email 不可再改
-                $("#password-fields").fadeIn(); // 顯示密碼欄位
+                $("#email").prop("readonly", true);  
+                $("#password-fields").fadeIn(); 
                 isEmailVerified = true;
             },
             error: function(xhr) {
@@ -45,7 +45,7 @@ $(document).ready(function() {
         const newPassword = $("#newPassword").val();
         const confirmPassword = $("#confirmPassword").val();
 
-        if (newPassword.length < 6) {
+        if (newPassword.length < 8) {
             showToast("密碼長度不足", "error");
             return;
         }
@@ -55,7 +55,7 @@ $(document).ready(function() {
         }
 
         $.ajax({
-            url: "/api/auth/reset-password", // 🚩 呼叫剛才 Service 寫的解鎖 API
+            url: "/api/auth/reset-password", //  呼叫剛才 Service 寫的解鎖 API
             type: "POST",
             contentType: "application/json",
             data: JSON.stringify({

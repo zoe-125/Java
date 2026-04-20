@@ -19,6 +19,15 @@ public class MemberService {
         this.memberRepository = memberRepository;
         this.passwordEncoder = new BCryptPasswordEncoder();
     }
+    
+    public Member updateMember(Long id, String username) {
+        return memberRepository.findById(id).map(member -> {
+            member.setUsername(username);
+//            member.setPhone(phone);
+//            member.setAddress(address);
+            return memberRepository.save(member); // 存回資料庫
+        }).orElseThrow(() -> new RuntimeException("找不到該會員"));
+    }
 
     /**
      * 會員註冊邏輯

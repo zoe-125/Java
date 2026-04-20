@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>會員中心 - 購物平台</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --danger-color: #e74c3c;
+            --bg-color: #f4f7f6;
+        }
+
+        body {
+            font-family: "Microsoft JhengHei", sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding-top: 50px;
+        }
+
+        .member-container {
+            background: white;
+            width: 90%;
+            max-width: 500px;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        h2 {
+            color: #333;
+            margin-bottom: 25px;
+            border-left: 5px solid var(--primary-color);
+            padding-left: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 1rem;
+        }
+
+        .form-group input:disabled {
+            background-color: #f9f9f9;
+            color: #888;
+            cursor: not-allowed;
+            border: 1px solid #eee;
+        }
+
+        .btn-update {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            width: 100%;
+            transition: background 0.3s;
+            margin-top: 10px;
+        }
+
+        .btn-update:hover {
+            background-color: #357abd;
+        }
+
+        hr {
+            margin: 30px 0;
+            border: 0;
+            border-top: 1px solid #eee;
+        }
+
+        .btn-logout {
+            background-color: transparent;
+            color: var(--danger-color);
+            border: 2px solid var(--danger-color);
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%;
+            transition: all 0.3s;
+        }
+
+        .btn-logout:hover {
+            background-color: var(--danger-color);
+            color: white;
+        }
+
+        #message {
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+            display: none;
+            text-align: center;
+        }
+        .success { background-color: #d4edda; color: #155724; }
+        .error { background-color: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+
+<div class="member-container">
+    <h2>個人資料設定</h2>
+    
+    <div id="message"></div>
+
+    <form id="memberUpdateForm">
+        <div class="form-group">
+            <label>帳號 (Email)</label>
+            <input type="text" id=""member-email"" disabled> 
+        </div>
+        <div class="form-group">
+            <label>會員等級</label>
+            <input type="text" id="member-role" disabled> 
+        </div>
+        <div class="form-group">
+            <label>姓名</label>
+            <input type="text" id="member-username" required placeholder="請輸入您的姓名">
+        </div>
+        
+        <button type="submit" class="btn-update">儲存修改</button>
+    </form>
+    
+    <hr>
+    
+    <div style="text-align: center;">
+        <button id="logoutBtn" class="btn-logout">登出系統</button>
+    </div>
+
+    <div style="margin-top: 20px; text-align: center;">
+        <a href="index.html" style="color: #4a90e2; text-decoration: none; font-size: 0.9rem;">← 返回商城首頁</a>
+    </div>
+</div>
+
+<script>
+$(document).ready(function() {
+    // 1. 從 LocalStorage 抓取登入資訊
+    const loginUser = JSON.parse(localStorage.getItem('loginUser'));
+    
+    // 檢查是否登入
+    if (!loginUser) {
+        alert("請先登入！");
+        window.location.href = "login.html";
+        return; 
+    }
+
+    // 2. 初始化畫面資料 (修正 ID 以對應 HTML)
+    $('#email').val(loginUser.email || "未提供");
+    $('#username').val(loginUser.username || "");
+    
+    // 處理會員等級顯示 (因為是 input，要用 .val())
+    const roleName = (loginUser.role === 'ADMIN') ? '管理員' : '一般會員';
+    $('#role').val(roleName);
+
+    // 3. 送出修改
+    $('#memberUpdateForm').submit(function(e) {
+        e.preventDefault();
+        
+        const updateData = {
+            id: loginUser.id,
+            username: $('#username').val(), // 修正 ID
+            // 如果後端需要 phone 和 address，也要從這裡抓或補上預設值
+            phone: loginUser.phone || "",
+            address: loginUser.address || ""
+        };
+
+        // 這裡接你的 $.ajax({ ... }) 更新邏輯
+        console.log("準備更新資料：", updateData);
+    });
+
+    // 4. 登出按鈕邏輯
+    $('#logoutBtn').click(function() {
+        localStorage.removeItem('loginUser');
+        window.location.href = "login.html";
+    });
+});

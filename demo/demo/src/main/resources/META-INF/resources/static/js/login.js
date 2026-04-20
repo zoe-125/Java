@@ -27,21 +27,17 @@ $(document).ready(function() {
             contentType: "application/json",
             data: JSON.stringify(loginData),
             success: function(response) {
-                // response 包含: username, isAdmin, status
+                
                 showToast("登入成功！正在導向首頁...", "success");
 
-                // 存入 localStorage 供全站/首頁 UI 判斷
-                localStorage.setItem('loginUser', response.username);
                 
-                // 🚩 修正：直接存入後端回傳的 userRole (ADMIN 或 USER)
-    			// 這樣你在資料庫改成 ADMIN，這裡拿到的就是 ADMIN
-    			localStorage.setItem('userRole', response.userRole);
+                // 直接將後端回傳的完整物件（包含 email）存入 localStorage
+                localStorage.setItem('loginUser', JSON.stringify(response));
                 
-                //可能刪除 🚩 關鍵：將後端布林值轉為 ADMIN 或 USER 字串
-                //可能刪除const role = response.isAdmin ? 'ADMIN' : 'USER';
-                //可能刪除localStorage.setItem('userRole', role);
+                // 保留原本的 userRole 儲存，供其他頁面判斷權限使用
+                localStorage.setItem('userRole', response.role);
 
-                // 延遲 1 秒跳轉，讓使用者看清楚成功提示
+                // 延遲 1 秒跳轉
                 setTimeout(() => {
                     window.location.href = "/index.html";
                 }, 1000);
@@ -54,12 +50,9 @@ $(document).ready(function() {
                 console.error("後端詳細報錯 (Response):", xhr.responseText);
                 console.error("============================");
                           
-                // 🚩 新增判斷邏輯
                 if (xhr.status === 403) {
-                    // 假設後端在次數超過時回傳 403 狀態碼
-                    showToast("錯誤次數過多，帳號已被鎖定，請聯繫管理員", "error");
+                    showToast("錯誤次數過多，帳號已被鎖定，請至忘記密碼重新設定", "error");
                 } else if (xhr.status === 401 || xhr.status === 404) {
-                    // 為了安全，統一顯示模糊訊息
                     showToast("電子信箱或密碼錯誤", "error");
                 } else {
                     showToast("伺服器連線異常，請稍後再試", "error");
@@ -69,10 +62,9 @@ $(document).ready(function() {
     });
 
     /**
-     * 顯示吐司訊息 (Toast) - 與 Register 邏輯完全一致
+     * 顯示吐司訊息 (Toast)
      */
     function showToast(msg, type) {
-        // 確保你的 login.html 裡有 <div id="message-toast" class="toast-hidden"></div>
         const toast = $("#message-toast");
         
         toast.text(msg);

@@ -185,3 +185,31 @@ body {
     transform: scale(1.1);
 }
 
+/* --- 彈窗表單對齊樣式 --- */
+.swal-form-container {
+    display: grid;
+    grid-template-columns: 80px 1fr; /* 固定左側標籤寬度，右側自動填滿 */
+    gap: 15px;
+    align-items: center;
+    padding: 10px 0;
+}
+
+.swal-form-container label {
+    font-weight: bold;
+    text-align: right;
+    color: #34495e;
+}
+
+.swal-form-container input, 
+.swal-form-container textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    box-sizing: border-box; 
+}
+
+.swal-form-container textarea {
+    height: 80px;
+    resize: none;
+}

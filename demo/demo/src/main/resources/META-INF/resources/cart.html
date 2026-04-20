@@ -10,19 +10,32 @@
 <body>
 
 <header class="main-header">
-    <div class="container">
-        <div class="logo">LifeStyle 購物車</div>
-        <div class="step-indicator">
-            <span class="active">1. 購物車</span> > <span>2. 填寫資料</span> > <span>3. 完成訂單</span>
-        </div>
+    <div class="container-wide">
+        <div class="logo">LifeStyle 購物車</div>        
     </div>
 </header>
 
 <div class="container cart-page">
     <h2 class="page-title">您的購物車</h2>
     <div class="cart-container">
-    	<div class="cart-left-column">
-        	<div class="cart-items" id="cartItemsList"></div>        	
+        <div class="cart-left-column">
+            <div class="cart-items" id="cartItemsList"></div>        	
+
+            <div class="checkout-info-section" id="checkoutInfo" style="display: none; margin-top: 20px;">
+                <h3>收件人資訊</h3>
+                <div class="form-group">
+                    <label>姓名</label>
+                    <input type="text" id="receiverName" placeholder="請輸入收件人姓名">
+                </div>
+                <div class="form-group">
+                    <label>電話</label>
+                    <input type="tel" id="receiverPhone" placeholder="請輸入聯絡電話">
+                </div>
+                <div class="form-group">
+                    <label>收件地址</label>
+                    <input type="text" id="receiverAddress" placeholder="請輸入配送地址">
+                </div>
+            </div>
         </div>
               
         <div class="cart-summary">
@@ -32,8 +45,9 @@
             <div class="summary-row promo"><span>活動折抵</span><span id="discount">-$ 200</span></div>
             <hr>
             <div class="summary-row total"><span>結帳總額</span><span id="finalTotal">$ 0</span></div> 
-            <button class="btn-checkout">前往結帳</button>  
-            <a href="index.html" class="continue-shopping">繼續購物</a>
+            <div class="cart-summary-buttons">
+            	<button class="btn-checkout">前往結帳</button>  
+           		<a href="index.html" class="continue-shopping">繼續購物</a>
         </div>
     </div>
 </div>

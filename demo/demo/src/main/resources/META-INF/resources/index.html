@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LifeStyle 購物 - 商品列表</title>
+    <title>LifeStyle 購物 - 首頁</title>
     <link rel="stylesheet" href="static/css/productList.css"> 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -15,12 +15,11 @@
             <a href="index.html"><i class="fas fa-home"></i> 回首頁</a>
             <a href="#">APP 下載</a>
         </div>
-        <div class="top-right-links">
+        <div class="top-right-links" id="auth-links-container">
             <a href="register.html">註冊</a>
             <a href="login.html">登入</a> 
             <a href="#.html">會員中心</a>
-            <a href="#">查訂單</a>
-            <a href="#">追蹤清單</a>
+            <a href="order.html">訂單詳情</a>           
             <a href="cart.html" class="cart-link">
                 <i class="fas fa-shopping-cart"></i> 購物車(<span id="cart-count">0</span>)
             </a>
@@ -84,8 +83,8 @@
         <span id="admin-entry"></span>
         <span class="welcome-msg"></span>
         <a href="#" id="btnLogout">登出</a>
-        <a href="#.html">會員中心</a>
-        <a href="#">查訂單</a>
+        <a href="memberCenter.html">會員中心</a>
+        <a href="order.html">訂單詳情</a>
         <a href="cart.html" class="cart-link">
             <i class="fas fa-shopping-cart"></i> 購物車(<span id="cart-count">0</span>)
         </a>

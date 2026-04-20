@@ -14,7 +14,6 @@ $(document).ready(function() {
                 products.forEach(product => {
                     const imgUrl = product.imageUrl ? product.imageUrl : 'https://via.placeholder.com/130';
                     
-                    // 🚩 整合：新增庫存顯示 (stock)
                     const cardHtml = `
                         <div class="product-card" id="card-${product.id}">
                             <img src="${imgUrl}" alt="商品圖片" class="product-img">
@@ -33,7 +32,7 @@ $(document).ready(function() {
                                 </div>
                             </div>
                             
-                            <button class="edit-btn" onclick="editProduct(${product.id}, '${product.title}', ${product.price}, '${product.description || ''}', ${product.stock || 0})" style="margin-left: 10px; background: none; border: none; cursor: pointer; font-size: 1.2rem;">
+                            <button class="edit-btn" onclick="editProduct(${product.id}, '${product.title}', ${product.price}, '${product.description || ''}', ${product.stock || 0})">
                                 ✏️
                             </button>
 
@@ -51,7 +50,7 @@ $(document).ready(function() {
         });
     }
 
-    // 2. 刪除功能 (原本內容保留)
+    // 2. 刪除功能
     window.deleteProduct = function(id, title) {
         Swal.fire({
             title: '確定要刪除嗎？',
@@ -79,19 +78,23 @@ $(document).ready(function() {
         });
     };
 
-    // 🚩 3. 修改功能：整合價格、描述與庫存
+    // 🚩 3. 修改功能：調整 HTML 結構以符合 CSS 對齊
     window.editProduct = function(id, title, currentPrice, currentDesc, currentStock) {
         Swal.fire({
             title: `修改商品：${title}`,
-            html:
-                `<div style="text-align: left;">
-                    <label style="font-weight: bold;">價格：</label>
-                    <input id="swal-price" type="number" class="swal2-input" value="${currentPrice}" placeholder="請輸入價格">
-                    <label style="font-weight: bold;">庫存：</label>
-                    <input id="swal-stock" type="number" class="swal2-input" value="${currentStock}" placeholder="請輸入庫存數量">
-                    <label style="font-weight: bold;">描述：</label>
-                    <textarea id="swal-desc" class="swal2-textarea" style="height: 80px;" placeholder="請輸入商品描述">${currentDesc}</textarea>
-                </div>`,
+            // 🚩 修改重點：使用 swal-form-container 結構
+            html: `
+                <div class="swal-form-container">
+                    <label for="swal-price">價格：</label>
+                    <input id="swal-price" type="number" value="${currentPrice}" placeholder="請輸入價格">
+                    
+                    <label for="swal-stock">庫存：</label>
+                    <input id="swal-stock" type="number" value="${currentStock}" placeholder="請輸入庫存數量">
+                    
+                    <label for="swal-desc">描述：</label>
+                    <textarea id="swal-desc" placeholder="請輸入商品描述">${currentDesc}</textarea>
+                </div>
+            `,
             focusConfirm: false,
             showCancelButton: true,
             confirmButtonText: '儲存修改',
@@ -123,7 +126,7 @@ $(document).ready(function() {
         });
     };
 
-    // 🚩 4. 發送修改請求
+    // 4. 發送修改請求
     function updateProductRequest(id, data) {
         $.ajax({
             url: `/api/products/${id}`,
