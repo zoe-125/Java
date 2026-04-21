@@ -12,5 +12,6 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     Optional<Member> findByEmail(String email);
 
     // 我們之後還需要透過驗證碼找人，所以順便定義這個：
-    Optional<Member> findByVerificationCode(String code);
+    Optional<Member> findByVerificationToken(String token);
+    
 }
