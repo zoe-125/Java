@@ -51,7 +51,17 @@ $(document).ready(function() {
                 console.error("============================");
                           
                 if (xhr.status === 403) {
-                    showToast("錯誤次數過多，帳號已被鎖定，請至忘記密碼重新設定", "error");
+                	// 💡 這裡加入訊息文字判斷，區分「鎖定」與「未啟用」
+        			const errorMsg = xhr.responseText;
+        			
+        			if (errorMsg.includes("帳號尚未啟用")) {
+			            showToast("帳號尚未啟用，請先至信箱收取驗證信並點擊連結", "error");
+			        } else if (errorMsg.includes("鎖定") || errorMsg.includes("次數過多")) {
+			            showToast("錯誤次數過多，帳號已被鎖定，請至忘記密碼重新設定", "error");
+			        } else {
+			            showToast("權限不足或帳號異常", "error");
+			        }
+        			                
                 } else if (xhr.status === 401 || xhr.status === 404) {
                     showToast("電子信箱或密碼錯誤", "error");
                 } else {
