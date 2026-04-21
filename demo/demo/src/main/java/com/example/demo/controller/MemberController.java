@@ -53,11 +53,31 @@ public class MemberController {
 //            response.put("phone", updatedMember.getPhone());
 //            response.put("address", updatedMember.getAddress());
             response.put("email", updatedMember.getEmail());
-            response.put("email", updatedMember.getRole());
+            response.put("role", updatedMember.getRole());
 
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             return ResponseEntity.status(400).body("更新失敗：" + e.getMessage());
+        }
+    }
+    
+    
+    /**
+     * 🚩 新增功能：處理信箱驗證連結
+     * 使用者點擊 Email 連結後會觸發此路徑：GET /api/members/verify?token=xxxxxx
+     */
+    @GetMapping("/verify")
+    public String verifyAccount(@RequestParam("token") String token) {
+        try {
+            // 呼叫 Service 層進行 Token 比對與狀態修改
+            boolean isSuccess = memberService.verifyToken(token);
+            if (isSuccess) {
+                return "驗證成功！帳號已啟用，您現在可以登入了。";
+            } else {
+                return "驗證失敗：連結無效或已過期。";
+            }
+        } catch (Exception e) {
+            return "系統錯誤：" + e.getMessage();
         }
     }
 }
