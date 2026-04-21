@@ -1,0 +1,19 @@
+databaseChangeLog:
+  - changeSet:
+      id: 005-add-members
+      author: zoe
+      changes:
+        # 1. 新增存放過期時間的欄位
+        - addColumn:
+            tableName: members
+            columns:
+              - column:
+                  name: token_expiry_time
+                  type: datetime
+                  remarks: "驗證碼失效時間"
+
+        # 2. 為現有的 verification_code 加上唯一限制 (Unique Constraint)
+        - addUniqueConstraint:
+            tableName: members
+            columnNames: verification_code
+            constraintName: uk_member_verification_code
