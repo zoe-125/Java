@@ -4,9 +4,11 @@ import com.example.demo.model.Member;
 import com.example.demo.repository.MemberRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.UUID;
 //import java.util.UUID;
 
 @Service
@@ -14,9 +16,11 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final EmailService emailService; // 注入發信服務
 
-    public MemberService(MemberRepository memberRepository) {
+    public MemberService(MemberRepository memberRepository,EmailService emailService) {
         this.memberRepository = memberRepository;
+        this.emailService = emailService;
         this.passwordEncoder = new BCryptPasswordEncoder();
     }
     
@@ -32,6 +36,7 @@ public class MemberService {
     /**
      * 會員註冊邏輯
      */
+    @Transactional
     public String registerMember(String username, String email, String password, String confirmPassword) {
         // 1. 基礎檢查
         if (username == null || username.trim().isEmpty() || 
@@ -47,8 +52,8 @@ public class MemberService {
         }
 
         // 3. 密碼長度檢查
-        if (password.length() < 6) {
-            return "錯誤：密碼長度至少需 6 位字元";
+        if (password.length() < 8) {
+            return "錯誤：密碼長度至少需 8 位字元";
         }
 
         // 4. 密碼一致性檢查
@@ -69,17 +74,58 @@ public class MemberService {
         
         // 設定初始權限與狀態
         newMember.setRole("USER"); // 預設不是管理員
-        newMember.setStatus("active"); // 開發階段預設 active
-        newMember.setFailedAttempts(0); // 初始化錯誤次數為 0
+        newMember.setStatus("inactive"); 
+        newMember.setFailedAttempts(0); 
+        
+        // 生成驗證資訊
+        String token = UUID.randomUUID().toString();
+        newMember.setVerificationToken(token);
+        newMember.setTokenExpiryTime(LocalDateTime.now().plusHours(24));
         
         try {
             // 🚩 這行是連結 Java 物件與資料庫的關鍵橋樑
             memberRepository.save(newMember); 
-            return "註冊成功！";
+            
+         // 發送驗證信件
+            emailService.sendVerificationEmail(newMember.getEmail(), token);
+            
+            return "註冊成功！請至信箱收取驗證信以啟用帳號。";
         } catch (Exception e) {
             // 萬一資料庫連不上、或是欄位長度爆了，save 就會失敗並跳到這裡
-            return "註冊失敗：系統發生錯誤";
+        	// 處理發信失敗或資料庫失敗
+            e.printStackTrace(); // 開發階段建議印出 error log
+            return "註冊失敗：系統發生錯誤,請稍後再試";
         }               
+    }
+    
+    @Transactional
+    public boolean verifyToken(String token) {
+        // 1. 透過 token 尋找會員
+        Optional<Member> memberOpt = memberRepository.findByVerificationToken(token);
+
+        if (memberOpt.isPresent()) {
+            Member member = memberOpt.get();
+
+            // 2. 檢查帳號是否已經是 active (避免重複驗證)
+            if ("active".equals(member.getStatus())) {
+                return true; 
+            }
+
+            // 3. 檢查 Token 是否過期
+            if (member.getTokenExpiryTime().isBefore(LocalDateTime.now())) {
+                return false; // 已過期
+            }
+
+            // 4. 驗證通過：更新狀態、清空 Token 與過期時間 (為了安全性)
+            member.setStatus("active");
+            member.setVerificationToken(null);
+            member.setTokenExpiryTime(null);
+            
+            memberRepository.save(member);
+            return true;
+        }
+
+        return false; // 找不到該 token
     }
     
     
@@ -117,17 +163,24 @@ public class MemberService {
     /**
      * 重設密碼並解除鎖定狀態
      */
+    @Transactional
     public String resetPasswordAndUnlock(String email, String newPassword) {
         return memberRepository.findByEmail(email).map(member -> {
-            // 1. 設定新密碼
+            // 設定新密碼
             member.setPassword(passwordEncoder.encode(newPassword));
             
-            // 2. 🚩 重要：解鎖帳號
+            // 僅針對「被鎖定」的帳號進行狀態恢復
+            if ("locked".equals(member.getStatus())) {
+                member.setStatus("active");
+            }
+            
+            
+            // 重要：解鎖帳號
             member.setFailedAttempts(0); // 錯誤次數歸零
-            member.setStatus("active");  // 狀態改回啟動
+            //member.setStatus("active");  // 狀態改回啟動
             
             memberRepository.save(member);
-            return "密碼重設成功，帳號已解鎖！";
+            return "密碼重設成功";
         }).orElse("找不到此電子信箱");
     }
 
