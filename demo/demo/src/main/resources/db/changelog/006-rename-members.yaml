@@ -1,0 +1,10 @@
+databaseChangeLog:
+  - changeSet:
+      id: 006-rename-members
+      author: zoe
+      changes:
+        - renameColumn:
+            tableName: members
+            oldColumnName: verification_code
+            newColumnName: verification_token
+            columnDataType: varchar(255) # 確保指定資料類型
