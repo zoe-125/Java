@@ -35,8 +35,11 @@ public class Member {
     @Column(name = "status")
     private String status = "pending"; // 預設為待驗證
     
-    @Column(name = "verification_code")
-    private String verificationCode;
+    @Column(name = "verification_token")
+    private String verificationToken;
+    
+    @Column(name = "token_expiry_time")
+    private LocalDateTime tokenExpiryTime;
     
 //    private String phone;
 //    private String address;
@@ -121,11 +124,18 @@ public class Member {
     	this.role = role; 
     	}
   
-    public String getVerificationCode() { 
-    	return verificationCode; 
+    public String getVerificationToken() { 
+    	return verificationToken; 
     	}
-    public void setVerificationCode(String verificationCode) { 
-    	this.verificationCode = verificationCode; 
+    public void setVerificationToken(String verificationToken) { 
+    	this.verificationToken = verificationToken; 
+    	}
+    
+    public LocalDateTime getTokenExpiryTime() { 
+    	return tokenExpiryTime; 
+    	}
+    public void setTokenExpiryTime(LocalDateTime tokenExpiryTime) { 
+    	this.tokenExpiryTime = tokenExpiryTime; 
     	}
     
     
