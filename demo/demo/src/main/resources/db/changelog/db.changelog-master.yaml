@@ -7,3 +7,7 @@ databaseChangeLog:
       file: db/changelog/003-fix-all-tables-encoding.yaml
   - include:
       file: db/changelog/004-create-orders.yaml
+  - include:
+      file: db/changelog/005-add-members.yaml
+  - include:
+      file: db/changelog/006-rename-members.yaml
