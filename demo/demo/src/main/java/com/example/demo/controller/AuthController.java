@@ -46,7 +46,13 @@ public class AuthController {
                     return ResponseEntity.status(403).body("錯誤次數過多，帳號已被鎖定");
                 }
             	
-                // 2. 比對密碼
+                // 🚩 2. 新增：檢查帳號是否已啟動 (Email 驗證檢查)
+                if ("inactive".equals(member.getStatus())) {
+                    return ResponseEntity.status(403).body("帳號尚未啟用，請先至信箱收取驗證信並點擊連結。");
+                }
+                
+                
+                // 3. 比對密碼
                 if (passwordEncoder.matches(request.password(), member.getPassword())) {                	
                 	// 更新最近登入時間
                     memberService.updateLastLoginTime(member);
@@ -104,4 +110,6 @@ public class AuthController {
         }
     }
 }
+
+
 
