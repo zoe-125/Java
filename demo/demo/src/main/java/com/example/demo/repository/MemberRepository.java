@@ -14,4 +14,6 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     // 我們之後還需要透過驗證碼找人，所以順便定義這個：
     Optional<Member> findByVerificationToken(String token);
     
+    Optional<Member> findByResetToken(String resetToken);
+    
 }
