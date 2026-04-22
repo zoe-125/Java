@@ -161,27 +161,57 @@ public class MemberService {
     }
     
     /**
-     * 重設密碼並解除鎖定狀態
+     * 步驟 1：生成重設 Token 並寄信
+     * 取代原本直接驗證 Email 的邏輯
      */
     @Transactional
-    public String resetPasswordAndUnlock(String email, String newPassword) {
+    public String sendResetPasswordEmail(String email) {
+    	System.out.println("DEBUG: 開始處理忘記密碼，Email = " + email);
         return memberRepository.findByEmail(email).map(member -> {
-            // 設定新密碼
-            member.setPassword(passwordEncoder.encode(newPassword));
+        	System.out.println("DEBUG: 找到會員: " + member.getUsername());
             
-            // 僅針對「被鎖定」的帳號進行狀態恢復
-            if ("locked".equals(member.getStatus())) {
-                member.setStatus("active");
-            }
-            
-            
-            // 重要：解鎖帳號
-            member.setFailedAttempts(0); // 錯誤次數歸零
-            //member.setStatus("active");  // 狀態改回啟動
+            // 1. 生成重設專用 Token 與過期時間 (30分鐘)
+            String token = UUID.randomUUID().toString();
+            member.setResetToken(token);
+            member.setResetTokenExpiryTime(LocalDateTime.now().plusMinutes(30));
             
             memberRepository.save(member);
-            return "密碼重設成功";
+            
+            // 2. 呼叫發信服務
+            emailService.sendResetPasswordEmail(email, token);
+            
+            return "重設信件已寄出，請檢查您的信箱。";
         }).orElse("找不到此電子信箱");
+    }
+
+    /**
+     * 步驟 2：使用者點擊連結後，執行真正的密碼重設
+     * 整合了你原本的「解鎖」與「錯誤次數歸零」邏輯
+     */
+    @Transactional
+    public String completePasswordReset(String token, String newPassword) {
+        return memberRepository.findByResetToken(token)
+            .filter(member -> member.getResetTokenExpiryTime().isAfter(LocalDateTime.now()))
+            .map(member -> {
+                // 1. 設定新密碼 (加密)
+                member.setPassword(passwordEncoder.encode(newPassword));
+                
+                // 2. 只有被鎖定 (locked) 的人才恢復為啟動 (active)
+                // 照你的要求：原本是 inactive 的人重設完依然是 inactive
+                if ("locked".equals(member.getStatus())) {
+                    member.setStatus("active");
+                }
+                
+                // 3. 整合原本的邏輯：錯誤次數歸零
+                member.setFailedAttempts(0);
+                
+                // 4. 安全性：重設成功後清除 Token
+                member.setResetToken(null);
+                member.setResetTokenExpiryTime(null);
+                
+                memberRepository.save(member);
+                return "密碼重設成功！";
+            }).orElse("連結無效或已過期。");
     }
 
 }
