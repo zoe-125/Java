@@ -90,25 +90,49 @@ public class AuthController {
     }
     
     /**
-     * 處理重設密碼與解鎖請求
+     * 步驟 A：使用者輸入 Email 後，發送重設密碼信件
+     * (對應 forgotPassword.html 的送出)
      */
-    @PostMapping("/reset-password")
-    public ResponseEntity<?> resetPassword(@RequestBody Map<String, String> request) {
+    @PostMapping("/forgot-password")
+    public ResponseEntity<?> forgotPassword(@RequestBody Map<String, String> request) {
         String email = request.get("email");
-        String newPassword = request.get("password"); 
+        if (email == null) {
+            return ResponseEntity.status(400).body("請輸入電子信箱");
+        }
 
-        if (email == null || newPassword == null) {
+        // 呼叫 MemberService 中我們新寫的發信方法
+        String result = memberService.sendResetPasswordEmail(email);
+
+        if (result.contains("已寄出")) {
+            return ResponseEntity.ok(result);
+        } else {
+            return ResponseEntity.status(404).body(result);
+        }
+    }
+
+    /**
+     * 步驟 B：處理從 Email 連結點進來的實際重設請求
+     * (對應 resetPassword.html 的確認修改)
+     */
+    @PostMapping("/do-reset-password")
+    public ResponseEntity<?> doResetPassword(@RequestBody Map<String, String> request) {
+        String token = request.get("token");
+        String newPassword = request.get("password");
+
+        if (token == null || newPassword == null) {
             return ResponseEntity.status(400).body("資料缺失");
         }
 
-        String result = memberService.resetPasswordAndUnlock(email, newPassword);
+        // 呼叫 MemberService 中我們新寫的驗證 Token 修改方法
+        String result = memberService.completePasswordReset(token, newPassword);
 
         if (result.contains("成功")) {
             return ResponseEntity.ok(result);
         } else {
             return ResponseEntity.status(400).body(result);
         }
-    }
+    }    
+  
 }
 
 
