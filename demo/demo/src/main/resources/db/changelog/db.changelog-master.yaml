@@ -11,3 +11,5 @@ databaseChangeLog:
       file: db/changelog/005-add-members.yaml
   - include:
       file: db/changelog/006-rename-members.yaml
+  - include:
+      file: db/changelog/007-add-members-resetPassword.yaml      
