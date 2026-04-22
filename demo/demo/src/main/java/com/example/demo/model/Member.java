@@ -41,6 +41,13 @@ public class Member {
     @Column(name = "token_expiry_time")
     private LocalDateTime tokenExpiryTime;
     
+    
+    @Column(name = "reset_token")
+    private String resetToken;
+    
+    @Column(name = "reset_token_expiry_time")
+    private LocalDateTime resetTokenExpiryTime;
+    
 //    private String phone;
 //    private String address;
     
@@ -139,6 +146,19 @@ public class Member {
     	}
     
     
+    public String getResetToken() { 
+    	return resetToken; 
+    	}
+    public void setResetToken(String resetToken) { 
+    	this.resetToken = resetToken; 
+    	}
+    
+    public LocalDateTime getResetTokenExpiryTime() { 
+    	return resetTokenExpiryTime; 
+    	}
+    public void setResetTokenExpiryTime(LocalDateTime resetTokenExpiryTime) { 
+    	this.resetTokenExpiryTime = resetTokenExpiryTime; 
+    	}
 //    public String getPhone() {
 //        return phone;
 //    }
