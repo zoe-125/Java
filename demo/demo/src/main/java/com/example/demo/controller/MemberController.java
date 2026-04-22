@@ -2,6 +2,9 @@ package com.example.demo.controller;
 
 import com.example.demo.resource.dto.CheckoutRequest;
 import com.example.demo.service.MemberService;
+
+import jakarta.servlet.http.HttpServletResponse;
+
 import com.example.demo.model.Member;
 import com.example.demo.model.Order;
 import com.example.demo.model.OrderItem;
@@ -12,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -66,18 +70,25 @@ public class MemberController {
      * 🚩 新增功能：處理信箱驗證連結
      * 使用者點擊 Email 連結後會觸發此路徑：GET /api/members/verify?token=xxxxxx
      */
+    
     @GetMapping("/verify")
-    public String verifyAccount(@RequestParam("token") String token) {
-        try {
-            // 呼叫 Service 層進行 Token 比對與狀態修改
-            boolean isSuccess = memberService.verifyToken(token);
-            if (isSuccess) {
-                return "驗證成功！帳號已啟用，您現在可以登入了。";
-            } else {
-                return "驗證失敗：連結無效或已過期。";
-            }
-        } catch (Exception e) {
-            return "系統錯誤：" + e.getMessage();
-        }
-    }
+ // 🚩 重點 1：加上 HttpServletResponse 參數，回傳改為 void
+	 public void verifyAccount(@RequestParam("token") String token, HttpServletResponse response) throws IOException {
+	     try {
+	         // 呼叫 Service 層進行 Token 比對與狀態修改
+	         boolean isSuccess = memberService.verifyToken(token);
+	         
+	         if (isSuccess) {
+	             // 🚩 重點 2：直接使用 response 進行重導向
+	             response.sendRedirect("/login.html?verified=true");
+	         } else {
+	             response.sendRedirect("/login.html?error=expired");
+	         }
+	     } catch (Exception e) {
+	         // 發生錯誤時也可以導向錯誤頁面或登入頁
+	         response.sendRedirect("/login.html?error=system_error");
+	     }
+	 }
+    
+ 
 }
