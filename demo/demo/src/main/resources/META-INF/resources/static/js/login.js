@@ -1,5 +1,17 @@
 $(document).ready(function() {
     
+    // 🚩 新增：檢查網址有沒有 ?verified=true (從驗證信連結跳轉過來時)
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('verified') === 'true') {
+        // 使用你原本定義的 showToast 方法
+        showToast("帳號已成功啟用！請登入", "success");
+        
+        // 為了美觀，洗掉網址參數，避免重新整理頁面又彈出訊息
+        window.history.replaceState({}, document.title, window.location.pathname);
+    }
+    
+    
+    
     // 當登入表單送出時執行
     $("#loginForm").submit(function(event) {
         event.preventDefault(); // 防止頁面跳轉
