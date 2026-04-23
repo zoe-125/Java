@@ -1,0 +1,154 @@
+/* 頁面基礎設定 */
+.main-header {
+    background-color: #000;
+}
+
+.main-header .container-wide {
+    display: flex; 
+    justify-content: center;
+}
+
+.order-page-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.page-title {
+    margin-bottom: 20px;
+}
+
+.empty-order-msg {
+    text-align: center;
+    padding: 80px 20px;
+    color: #888;
+    background: #fff;
+    border-radius: 8px;
+}
+
+.continue-shopping-wrapper {
+    margin-top: 30px; 
+    text-align: center;
+}
+
+.continue-shopping {
+    text-decoration: none; 
+    color: #4ec3e0;
+}
+
+/* 訂單詳情彈窗樣式 */
+.custom-modal {
+    position: fixed;
+    top: 0; left: 0; 
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5);
+    display: none; /* 透過 JS 控制顯示 */
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.modal-content {
+    background: #fff;
+    padding: 25px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 450px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    position: relative;
+}
+
+.close-btn {
+    position: absolute;
+    right: 20px;
+    top: 15px;
+    cursor: pointer;
+    font-size: 24px;
+    color: #999;
+}
+
+.shipping-info h4 {
+    margin-top: 20px;
+    border-left: 4px solid #ee4d2d;
+    padding-left: 10px;
+    color: #333;
+}
+
+#detail-id {
+    color: #ee4d2d;
+    font-weight: bold;
+}
+
+/* 訂單卡片樣式 */
+.order-card {
+    background: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 15px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.order-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.order-main-info {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.order-img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 6px;
+    background-color: #f9f9f9;
+}
+
+.product-detail {
+    flex: 1;
+}
+
+.product-name {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.product-qty {
+    font-size: 0.9rem;
+    color: #777;
+}
+
+.order-price-group {
+    text-align: right;
+}
+
+.order-price {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #ee4d2d; /* 蝦皮紅 */
+    margin-bottom: 10px;
+}
+
+/* 狀態標籤 */
+.status-badge {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+}
+
+.status-pending { 
+	background-color: #fff4e6; 
+	color: #fd7e14; 
+}
+
+.status-complete { 
+	background-color: #ebfbee; 
+	color: #40c057; 
+}
