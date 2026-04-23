@@ -5,59 +5,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LifeStyle 我的訂單</title>
     <link rel="stylesheet" href="/static/css/product.css">    
+    <link rel="stylesheet" href="/static/css/order.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        /* 額外補充：確保清單沒東西時的樣式 */
-        .empty-order-msg {
-            text-align: center;
-            padding: 50px;
-            color: #888;
-        }
-    </style>
 </head>
 <body class="body">
 
-<header class="main-header" style="background-color: #000;">
-    <div class="container-wide" style="display: flex; justify-content: center;">
+<header class="main-header">
+    <div class="container-wide">
         <div class="logo">LifeStyle 我的訂單</div>
     </div>
 </header>
 
-<div class="container cart-page">
+<div class="order-page-container">
     <h2 class="page-title">歷史訂單查詢</h2>
     
-    <div class="cart-container">
-        <div class="cart-left-column">
-            <div id="order-list-container">
-                <div class="empty-order-msg">正在載入您的訂單紀錄...</div>
-            </div>
-            
-            <div class="continue-shopping-wrapper">
-                <a href="index.html" class="continue-shopping">
-                    <i class="fas fa-arrow-left"></i> 回首頁繼續購物
-                </a>
-            </div>
-        </div>
+    <div id="order-list-container">
+        <div class="empty-order-msg">正在載入您的訂單紀錄...</div>
+    </div>
+    
+    <div class="continue-shopping-wrapper">
+        <a href="index.html" class="continue-shopping">
+            <i class="fas fa-arrow-left"></i> 回首頁繼續購物
+        </a>
+    </div>
+</div>
+
+<div id="order-detail-modal" class="custom-modal">
+    <div class="modal-content">
+        <span class="close-btn" id="close-modal-x">&times;</span>
+        <h3>訂單詳情</h3>
+        <hr>
+        <p><strong>訂單編號：</strong> <span id="detail-id"></span></p>
         
-        <div class="cart-summary">
-            <h3>會員資訊</h3>
-            <div id="user-info-display">
-                <div class="summary-row">
-                    <span>姓名</span>
-                    <span id="display-username">讀取中...</span>
-                </div>
-                <div class="summary-row">
-                    <span>信箱</span>
-                    <span id="display-email">讀取中...</span>
-                </div>
-                <hr>
-                <div class="summary-row">
-                    <p style="font-size: 0.8rem; color: #888; line-height: 1.4;">
-                        <i class="fas fa-info-circle"></i> 
-                        若需修改會員基本資料或取消訂單，請聯繫線上客服。
-                    </p>
-                </div>
-            </div>
+        <div class="shipping-info">
+            <h4>收件資訊</h4>
+            <p><strong>收件人：</strong><span id="detail-name"></span></p>
+            <p><strong>手機號碼：</strong><span id="detail-phone"></span></p>
+            <p><strong>收件地址：</strong><span id="detail-address"></span></p>
         </div>
     </div>
 </div>
