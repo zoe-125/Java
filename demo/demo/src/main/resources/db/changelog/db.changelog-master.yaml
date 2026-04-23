@@ -14,4 +14,4 @@ databaseChangeLog:
   - include:
       file: db/changelog/007-add-members-resetPassword.yaml      
   - include:
-      file: db/changelog/008-add-orders.yaml      
+      file: db/changelog/008-add-orders.yaml
