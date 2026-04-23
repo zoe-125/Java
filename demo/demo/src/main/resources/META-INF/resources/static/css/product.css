@@ -665,3 +665,79 @@
     background-color: #ddd;
     text-decoration: none;
 }
+
+/* 數量整行的容器 */
+.qty-row {
+    display: flex;
+    align-items: flex-start; /* 改成對齊頂部，避免紅字出現時整行上下晃動 */
+    gap: 15px;               /* 各元件之間的水平間距 */
+    margin-bottom: 20px;
+}
+
+/* 標籤文字 (數量、總金額) */
+.row-label {
+    font-size: 14px;
+    color: #757575;
+    min-width: 60px;
+    padding-top: 8px; /* 配合按鈕高度做對齊 */
+}
+
+/* 🚩 關鍵：包覆按鈕與紅字的容器 */
+.qty-wrapper {
+    display: flex;
+    flex-direction: column; /* 讓紅字乖乖待在按鈕下方 */
+    align-items: flex-start;
+}
+
+/* 加減按鈕組 */
+.quantity-selector {
+    display: flex;
+    border: 1px solid #ddd;
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.qty-btn {
+    width: 32px;
+    height: 32px;
+    background: #fff;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    outline: none;
+}
+
+.qty-btn:hover {
+    background: #f8f8f8;
+}
+
+.qty-input {
+    width: 50px;
+    height: 32px;
+    text-align: center;
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    border-top: none;
+    border-bottom: none;
+    font-size: 16px;
+    outline: none;
+}
+
+/* 🚩 警告文字樣式 */
+#stock-warning {
+    color: #ee4d2d;
+    font-size: 12px;
+    margin-top: 4px; /* 與按鈕的距離 */
+    min-height: 18px; /* 預留高度，避免文字出現時瞬間撐開頁面 */
+}
+
+/* 總金額顯示區 */
+.total-amount-display {
+    font-size: 18px;
+    color: #ee4d2d;
+    font-weight: bold;
+    padding-top: 4px;
+}
