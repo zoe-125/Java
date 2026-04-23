@@ -8,92 +8,105 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
+	<div id="message-toast" class="toast-hidden"></div>
+	<header class="main-header">
+	    <div class="container-wide">
+	        <div class="logo">Lifestyle 購物</div>
+	        
+	        <div class="header-right">
+	            <nav class="nav-menu">
+	                <a href="index.html" class="nav-item">
+	                    <i class="fas fa-home"></i> 首頁
+	                </a>
+	            </nav>        
+	       		<div class="cart-status">
+	           		<i class="fas fa-shopping-cart"></i> 購物車 (<span id="cart-count">0</span>)
+	     		</div>
+	 		</div>
+	    </div>
+	</header>
 
-<header class="main-header">
-    <div class="container-wide">
-        <div class="logo">Lifestyle 購物</div>
-        
-        <div class="header-right">
-            <nav class="nav-menu">
-                <a href="index.html" class="nav-item">
-                    <i class="fas fa-home"></i> 首頁
-                </a>
-            </nav>        
-       		<div class="cart-status">
-           		<i class="fas fa-shopping-cart"></i> 購物車 (<span id="cart-count">0</span>)
-     		</div>
- 		</div>
-    </div>
-</header>
-
-<div class="main-container container">
-    <div class="product-gallery">
-        <div class="main-image-wrapper">
-            <img src="" alt="產品主圖" id="mainImage">
-            <span class="capacity-badge" id="render-capacity"></span>
-        </div>
-        <div class="thumbnail-list" id="render-thumbnails"></div>
-    </div>
-
-    <div class="product-details">
-        <div id="render-promo-tags"></div>
-        <h1 class="product-title" id="render-title"></h1>
-        <ul class="product-features" id="render-features"></ul>
-        
-        <div class="price-section">
-            <span class="price-label">市售價</span>
-            <span class="market-price" id="render-market-price"></span>
-            <span class="price-label promo">促銷價</span>
-            <span class="current-price">$ <span id="render-current-price"></span></span>
-        </div>
-        
-        <div class="detail-rows">
-            <div class="row"><span class="row-label">品牌名稱</span><span class="row-content" id="render-brand"></span></div>
-            <div class="row"><span class="row-label">保固資訊</span><span class="row-content" id="render-warranty"></span></div>
-            <div class="row">
-			    <span class="row-label">庫存數量</span>
-			    <span class="row-content" id="render-stock"></span>
-			</div>            
-            <div class="row qty-row">
-                <span class="row-label">數量</span>
-                <div class="quantity-selector">
-                    <button class="qty-btn minus">-</button>
-                    <input type="number" class="qty-input" value="1" min="1">
-                    <button class="qty-btn plus">+</button>
-                </div>
+	<div class="main-container container">
+	    <div class="product-gallery">
+	        <div class="main-image-wrapper">
+	            <img src="" alt="產品主圖" id="mainImage">
+	            <span class="capacity-badge" id="render-capacity"></span>
+	        </div>
+	        <div class="thumbnail-list" id="render-thumbnails"></div>
+	    </div>
+	
+	    <div class="product-details">
+	        <div id="render-promo-tags"></div>
+	        <h1 class="product-title" id="render-title"></h1>
+	        <ul class="product-features" id="render-features"></ul>
+	        
+	        <div class="price-section">
+	            <span class="price-label">市售價</span>
+	            <span class="market-price" id="render-market-price"></span>
+	            <span class="price-label promo">促銷價</span>
+	            <span class="current-price">$ <span id="render-current-price"></span></span>
+	        </div>
+	        
+	        <div class="detail-rows">
+	            <div class="row"><span class="row-label">品牌名稱</span><span class="row-content" id="render-brand"></span></div>
+	            <div class="row"><span class="row-label">保固資訊</span><span class="row-content" id="render-warranty"></span></div>
+	            <div class="row">
+				    <span class="row-label">庫存數量</span>
+				    <span class="row-content" id="render-stock"></span>
+				</div>            
+	            
+	            <div class="row qty-row">
+  					<span class="row-label">數量</span>
     
-                <span class="row-label total-label">總金額</span>
-    			<div class="total-amount-display">
-        			$ <span id="render-total-amount">0</span>
-    			</div>                
-            </div>
-        </div>
-
-        <div class="action-buttons">
-            <button class="btn btn-direct-buy">直接購買</button>
-            <button class="btn btn-add-cart"><i class="fas fa-shopping-cart"></i> 放入購物車</button>
-        </div>
+    				<div class="qty-wrapper">
+				        <div class="quantity-selector">
+				            <button class="qty-btn minus">-</button>
+				            <input type="number" class="qty-input" value="1" min="1">
+				            <button class="qty-btn plus">+</button>
+				        </div>
         
-        <div class="continue-shopping-wrapper">
-            <a href="index.html" class="continue-shopping">
-                <i class="fas fa-arrow-left"></i> 繼續購物
-            </a>
-        </div>        
-    </div>
-</div>
+       					<div id="stock-warning">已達到購買上限</div>
+    				</div>
 
-<div id="login-modal" class="modal-overlay">
-    <div class="modal-content-box">
-        <i class="fas fa-user-circle modal-icon-user"></i>
-        <h3>請先登入</h3>
-        <p>登入後即可享受完整的購物功能</p>
-        <div class="modal-btn-group">
-            <button id="btn-close-modal" class="btn-cancel">再看看</button>
-            <button id="btn-go-login" class="btn-confirm">前往登入</button>
-        </div>
-    </div>
-</div>
-
+    				<span class="row-label total-label">總金額</span>
+				    <div class="total-amount-display">
+				        $ <span id="render-total-amount">0</span>
+    				</div>                
+				</div>	            
+	        </div>
+	
+	        <div class="action-buttons">
+	            <button class="btn btn-direct-buy">直接購買</button>
+	            <button class="btn btn-add-cart"><i class="fas fa-shopping-cart"></i> 放入購物車</button>
+	        </div>
+	        
+	        <div class="continue-shopping-wrapper">
+	            <a href="index.html" class="continue-shopping">
+	                <i class="fas fa-arrow-left"></i> 繼續購物
+	            </a>
+	        </div>        
+	    </div>
+	</div>
+	
+	<div id="login-modal" class="modal-overlay">
+	    <div class="modal-content-box">
+	        <i class="fas fa-user-circle modal-icon-user"></i>
+	        <h3>請先登入</h3>
+	        <p>登入後即可享受完整的購物功能</p>
+	        <div class="modal-btn-group">
+	            <button id="btn-close-modal" class="btn-cancel">再看看</button>
+	            <button id="btn-go-login" class="btn-confirm">前往登入</button>
+	        </div>
+	    </div>
+	</div>
+	<div id="stock-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 9999; justify-content: center; align-items: center;">
+    	<div style="background: white; width: 320px; border-radius: 8px; overflow: hidden; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+        	<div style="padding: 30px 20px; color: #333; line-height: 1.6; font-size: 16px;" id="stock-modal-message"></div>            
+        	<div id="btn-close-stock-modal" style="padding: 12px; color: #ee4d2d; font-weight: bold; cursor: pointer; border-top: 1px solid #eee; font-size: 16px;">
+            	OK
+        	</div>
+    	</div>
+	</div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="static/js/product.js"></script>
 </body>
