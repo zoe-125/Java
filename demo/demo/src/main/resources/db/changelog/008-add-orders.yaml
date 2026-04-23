@@ -1,0 +1,13 @@
+databaseChangeLog:
+  - changeSet:
+      id: 008-add-orders
+      author: zoe
+      changes:
+        - addColumn:
+            tableName: orders
+            columns:
+              - column:
+                  name: receiver_name
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
