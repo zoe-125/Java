@@ -8,73 +8,103 @@ $(document).ready(function() {
         return;
     }
 
-    // 2. 顯示會員資訊 (直接從 localStorage 拿)
-    $('#display-username').text(loginUser.username || "訪客");
-    $('#display-email').text(loginUser.email || "未設定");
+    // 2. 向後端請求訂單列表
+    loadOrderHistory(loginUser.id);
 
-    // 3. 向後端請求訂單列表
-    // 注意：路徑要和你剛剛在瀏覽器測試成功的 member/7 一致
+    // 3. 綁定彈窗關閉事件
+    $('#close-modal-x').on('click', function() {
+        closeOrderModal();
+    });
+
+    $(window).on('click', function(event) {
+        if ($(event.target).is('#order-detail-modal')) {
+            closeOrderModal();
+        }
+    });
+});
+
+/**
+ * 從資料庫載入訂單紀錄
+ */
+function loadOrderHistory(userId) {
     $.ajax({
-        url: `/api/orders/member/${loginUser.id}`,
+        url: `/api/orders/member/${userId}`,
         method: 'GET',
         success: function(orders) {
-            console.log("抓取的訂單資料：", orders);
             const $container = $('#order-list-container');
             $container.empty();
 
-            // 如果沒有訂單
             if (!orders || orders.length === 0) {
                 $container.html(`
-                    <div style="text-align:center; padding: 40px;">
-                        <p style="color:#888;">目前尚無訂單紀錄</p>
-                        <a href="index.html" class="continue-shopping" style="display:inline-block; margin-top:10px;">
-                            去逛逛商品吧！
-                        </a>
+                    <div class="empty-order-msg">
+                        <p>目前尚無訂單紀錄</p>
+                        <a href="index.html" class="continue-shopping">去逛逛商品吧！</a>
                     </div>
                 `);
                 return;
             }
 
-            // 有訂單，開始跑迴圈
             orders.forEach(ord => {
-                // 優化 A: 處理金額千分位 (36000 -> 36,000)
-                const formattedPrice = ord.totalAmount.toLocaleString();
-                
-                // 優化 B: 處理時間格式
+                const formattedPrice = ord.totalAmount ? ord.totalAmount.toLocaleString() : 0;
                 const orderDate = new Date(ord.createdAt).toLocaleString();
+                
+                // 狀態處理
+                let statusText = ord.status === 'PENDING' ? "處理中" : "已完成";
+                let statusClass = ord.status === 'PENDING' ? "status-pending" : "status-complete";
 
-                // 優化 C: 根據狀態給不同顏色 (需要在 CSS 定義 class)
-                let statusText = "";
-                let statusClass = "";
-                if(ord.status === 'PENDING') {
-                    statusText = "處理中";
-                    statusClass = "status-pending"; // 可以在 CSS 設定橘色
-                } else {
-                    statusText = "已完成";
-                    statusClass = "status-complete"; // 可以在 CSS 設定綠色
-                }
+                // --- 🚩 圖片與名稱處理區 ---
+                const hasItems = ord.items && ord.items.length > 0;
+                
+                // 讀取資料庫存的 "/uploads/..." 路徑
+                const imgPath = (hasItems && ord.items[0].imageUrl) 
+                                ? ord.items[0].imageUrl 
+                                : '/static/images/default-product.png';
 
-                $container.append(`
-                    <div class="cart-item">
-                        <div class="item-info">
-                            <h4 style="color:#333;">訂單編號：${ord.orderNumber}</h4>
-                            <p style="font-size:0.9rem; color:#666;">下單時間：${orderDate}</p>
-                            <p style="font-size:0.9rem; color:#666;">收件地址：${ord.shippingAddress}</p>
-                        </div>
-                        <div class="item-price">
-                            <span style="font-size:0.8rem; color:#888;">總額</span><br>
-                            $${formattedPrice}
-                        </div>
-                        <div style="margin-left: 20px;">
-                            <span class="status-badge ${statusClass}">${statusText}</span>
+                const firstItemName = hasItems ? ord.items[0].productName : '多樣商品';
+                const itemCount = hasItems ? ord.items.length : 0;
+
+                // 產生卡片 HTML
+                // 🚩 修改點：這裡改用 ord.phone 以對應你的 Java DTO 變數名
+                const orderCard = `
+                    <div class="order-card" onclick="openOrderDetail('${ord.orderNumber}', '${ord.receiverName}', '${ord.phone}', '${ord.shippingAddress}')">
+                        <div class="order-main-info">
+                            <img src="${imgPath}" class="order-img" onerror="this.src='/static/images/default-product.png'">
+                            <div class="product-detail">
+                                <div class="product-name">${firstItemName} ${itemCount > 1 ? '等商品' : ''}</div>
+                                <div class="product-qty">共 ${itemCount} 件項目 | 下單時間：${orderDate}</div>
+                            </div>
+                            <div class="order-price-group">
+                                <div class="order-price">$${formattedPrice}</div>
+                                <span class="status-badge ${statusClass}">${statusText}</span>
+                            </div>
                         </div>
                     </div>
-                `);
+                `;
+                $container.append(orderCard);
             });
         },
         error: function(err) {
             console.error("無法抓取訂單", err);
-            $('#order-list-container').html('<p style="color:red;">資料載入失敗，請稍後再試</p>');
+            $('#order-list-container').html('<p class="empty-order-msg" style="color:red;">資料載入失敗，請稍後再試</p>');
         }
     });
-});
+}
+
+/**
+ * 顯示訂單詳情彈窗
+ */
+function openOrderDetail(orderId, name, phone, address) {
+    $('#detail-id').text(orderId);
+    $('#detail-name').text(name || "未提供");
+    $('#detail-phone').text(phone || "未提供");
+    $('#detail-address').text(address || "未提供");
+    
+    $('#order-detail-modal').fadeIn(200).css('display', 'flex');
+}
+
+/**
+ * 關閉訂單詳情彈窗
+ */
+function closeOrderModal() {
+    $('#order-detail-modal').fadeOut(200);
+}
