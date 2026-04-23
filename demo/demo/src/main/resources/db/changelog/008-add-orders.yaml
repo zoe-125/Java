@@ -10,4 +10,4 @@ databaseChangeLog:
                   name: receiver_name
                   type: varchar(50)
                   constraints:
-                    nullable: fals
+                    nullable: false
