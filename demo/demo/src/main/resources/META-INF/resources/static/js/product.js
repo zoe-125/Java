@@ -71,7 +71,7 @@ $(document).ready(function() {
         localStorage.setItem(cartKey, JSON.stringify(cart));
     }
 
-    // --- 5. 仿蝦皮：檢查並切換「已達到購買上限」提示 ---
+    // --- 5. 檢查並切換「已達到購買上限」提示 ---
     function checkStockWarning(val) {
         const stock = window.currentProduct ? window.currentProduct.stock : 0;
         if (val >= stock && stock > 0) {
