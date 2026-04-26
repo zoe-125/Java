@@ -44,6 +44,10 @@ $(document).ready(function() {
                     <img src="${item.img}">
                     <div class="item-info">
                         <h4>${item.name}</h4>                        
+                        <div class="item-desc" style="font-size: 0.85rem; color: #777; margin-top: 4px; 
+                			display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden;">
+               				${item.desc || ""} 
+            			</div>                        
                         <p>$${(item.price || 0).toLocaleString()}</p>
                         <div class="quantity-selector" style="margin-top:10px;">
                             <button class="qty-btn minus" ${currentStep === 2 ? 'disabled' : ''}>-</button>
@@ -126,7 +130,12 @@ $(document).ready(function() {
             } catch (e) {
                 console.error("解析登入資料失敗", e);
             }
-
+			
+			// 🚩 在這裡加入檢查
+            console.log("--- 偵錯資訊 ---");
+            console.log("原始 loginUser 物件:", loginUser);
+            console.log("解析後的 memberId 值:", loginUser ? parseInt(loginUser.id) : "物件不存在");
+			
             // 檢查是否有登入且包含 ID
             if (!loginUser || !loginUser.id) {
                 alert('請先登入會員才能結帳');
@@ -135,17 +144,21 @@ $(document).ready(function() {
             }
 
             const checkoutData = {
-                memberId: loginUser.id, // 使用專屬 ID
+                //memberId: loginUser.id, // 使用專屬 ID
+                memberId: parseInt(loginUser.id),
                 receiverName: $('#receiverName').val(),
                 receiverPhone: $('#receiverPhone').val(),
                 receiverAddress: $('#receiverAddress').val(),
-                items: cartData.map(item => ({
+                items: cartData.map(item => ({                    
                     id: item.id,
                     name: item.name,
                     price: item.price,
-                    qty: item.qty
+                    qty: item.qty                 
                 }))
             };
+            
+            // 🚩 在送出前看一眼整包 JSON 長怎樣
+            console.log("送出給後端的完整資料 (checkoutData):", checkoutData);
 
             if (!checkoutData.receiverName || !checkoutData.receiverPhone || !checkoutData.receiverAddress) {
                 alert('請完整填寫收件人資訊');
