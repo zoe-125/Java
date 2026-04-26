@@ -40,6 +40,9 @@ public class OrderItem {
     @Transient
     private String imageUrl;
 
+    @Transient
+    private String productDescription; // 用來存放從產品表抓回來的描述
+    
     // --- Getter and Setter 方法 ---
 
     public Long getId() {
@@ -104,5 +107,13 @@ public class OrderItem {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+    
+    public String getProductDescription() {
+        return productDescription;
+    }
+
+    public void setProductDescription(String productDescription) {
+        this.productDescription = productDescription;
     }
 }
