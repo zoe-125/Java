@@ -65,6 +65,7 @@ $(document).ready(function() {
                 name: window.currentProduct.title,
                 price: window.currentProduct.price,
                 img: window.currentProduct.imageUrl,
+                desc: window.currentProduct.description,
                 qty: qty                            
             });
         }
