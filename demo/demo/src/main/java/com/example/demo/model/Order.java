@@ -34,6 +34,9 @@ public class Order {
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
+    @Column(name = "receiver_name") // 確保資料庫有這一欄
+    private String receiverName;
+    
     // 關鍵修正：型態改為 List<OrderItem>
     @JsonManagedReference
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -85,10 +88,6 @@ public class Order {
         this.phone = phone;
     }
 
-    public String shippingAddress() {
-        return shippingAddress;
-    }
-
     public String getShippingAddress() {
         return shippingAddress;
     }
@@ -111,6 +110,15 @@ public class Order {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    // --- 🚩 補齊收件人姓名的 Getter and Setter ---
+    public String getReceiverName() {
+        return receiverName;
+    }
+
+    public void setReceiverName(String receiverName) {
+        this.receiverName = receiverName;
     }
 
     // 關鍵修正：Getter/Setter 型態同步改為 OrderItem
