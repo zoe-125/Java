@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.model.Order;
 import com.example.demo.model.OrderItem;
-import com.example.demo.resource.dto.CheckoutRequest; // 🚩 確保指向你原本的 DTO
+import com.example.demo.resource.dto.CheckoutRequest;
 import com.example.demo.repository.OrderRepository;
 import com.example.demo.repository.ProductRepository;
 
@@ -23,28 +23,38 @@ public class OrderService {
     @Autowired
     private ProductRepository productRepository;
     
+    /**
+     * 取得會員訂單並補齊圖片路徑
+     */
     public List<Order> getOrdersByMemberId(Long memberId) {
-        // 呼叫原本 Repository 裡的查詢功能
-        return orderRepository.findByMembersId(memberId);
+        // 1. 呼叫 Repository 取得原始訂單清單
+        List<Order> orders = orderRepository.findByMembersId(memberId);
+        
+        // 2. 🚩 整合點：補齊圖片資料
+        for (Order order : orders) {
+            if (order.getItems() != null) {
+                for (OrderItem item : order.getItems()) {
+                    // 根據 products_id 去產品表找出圖片路徑
+                    productRepository.findById(item.getProductsId()).ifPresent(product -> {
+                        // 將圖片路徑塞進 OrderItem 的 imageUrl 欄位 (回傳顯示用)
+                        item.setImageUrl(product.getImageUrl());
+                    });
+                }
+            }
+        }
+        return orders;
     }
     
     /**
-     * 完整結帳邏輯：
-     * 1. 檢查並即時扣除庫存
-     * 2. 建立訂單主表 (Order)
-     * 3. 處理訂單明細 (OrderItem)
-     * 4. 存檔 (由 @Transactional 確保原子性)
+     * 完整結帳邏輯 (已移除結帳時的圖片處理)
      */
     @Transactional
     public Order checkout(CheckoutRequest request) {
         
         // --- 1. 庫存檢查與扣除 ---
         for (CheckoutRequest.CartItemDTO itemDto : request.getItems()) {
-            // 呼叫 Repository 的 @Query 進行扣庫存
             int updatedRows = productRepository.decreaseStock(itemDto.getId(), itemDto.getQty());
-            
             if (updatedRows == 0) {
-                // 如果回傳 0，表示該商品庫存不足，會直接拋出異常並回滾 (Rollback)
                 throw new RuntimeException("商品 「" + itemDto.getName() + "」 庫存不足，結帳失敗！");
             }
         }
@@ -52,7 +62,7 @@ public class OrderService {
         // --- 2. 建立訂單主表 (Order) ---
         Order order = new Order();
         order.setMembersId(request.getMemberId());
-        order.setOrderNumber("ORD" + System.currentTimeMillis()); // 產生唯一編號
+        order.setOrderNumber("ORD" + System.currentTimeMillis());
         order.setPhone(request.getReceiverPhone());
         order.setShippingAddress(request.getReceiverAddress());
         order.setStatus("PENDING");
@@ -64,11 +74,13 @@ public class OrderService {
 
         for (CheckoutRequest.CartItemDTO itemDto : request.getItems()) {
             OrderItem item = new OrderItem();
-            item.setOrder(order); // 🚩 重要：建立雙向關聯
+            item.setOrder(order); 
             item.setProductsId(itemDto.getId());
             item.setProductName(itemDto.getName());
             item.setPurchasePrice(itemDto.getPrice());
             item.setQuantity(itemDto.getQty());
+            
+            // 🚩 已刪除原有的 item.setImageUrl 程式碼，避免報錯
             
             int subtotal = itemDto.getPrice() * itemDto.getQty();
             item.setSubtotal(subtotal);
@@ -77,12 +89,9 @@ public class OrderService {
             orderItems.add(item);
         }
 
-        // 將明細清單放入訂單物件，並設定總金額
         order.setItems(orderItems);
         order.setTotalAmount(totalAmount);
 
-        // --- 4. 儲存到資料庫 ---
-        // 因為你有設定 CascadeType.ALL，存 order 就會連帶存 items
         return orderRepository.save(order);
     }
 }
