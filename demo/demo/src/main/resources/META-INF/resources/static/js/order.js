@@ -61,7 +61,8 @@ function loadOrderHistory(userId) {
                 // 優先使用小駝峰 imageUrl，若無則用底線 image_url，都沒有則給空字串
                 const imgPath = hasItems ? (ord.items[0].imageUrl || ord.items[0].image_url || "") : "";
 
-                const firstItemName = hasItems ? ord.items[0].productName : '無商品名稱';                
+                const firstItemName = hasItems ? ord.items[0].productName : '無商品名稱';   
+                const firstItemDesc = hasItems ? (ord.items[0].productDescription || ord.items[0].description || "") : "";                             
                 const formattedUnitPrice = unitPrice.toLocaleString();
                 const totalQty = hasItems 
                     ? ord.items.reduce((sum, item) => sum + (item.quantity || 0), 0) 
@@ -79,6 +80,9 @@ function loadOrderHistory(userId) {
                             
                             <div class="product-detail">
                                 <div class="product-name">${firstItemName} ${ord.items.length > 1 ? '等商品' : ''}</div>
+                                <div class="product-desc" style="font-size: 0.85rem; color: #777; margin-top: 4px; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                                    ${firstItemDesc}
+                                </div>
                                 <div class="product-qty">x${totalQty}</div>
                                 <div class="order-date">下單時間：${orderDate}</div>
                             </div>
