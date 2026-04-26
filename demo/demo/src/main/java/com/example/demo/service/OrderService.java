@@ -38,6 +38,9 @@ public class OrderService {
                     productRepository.findById(item.getProductsId()).ifPresent(product -> {
                         // 將圖片路徑塞進 OrderItem 的 imageUrl 欄位 (回傳顯示用)
                         item.setImageUrl(product.getImageUrl());
+                        // 新增點：把產品表的描述塞給 OrderItem
+                        // 假設你的 Product 實體類別中抓描述的方法是 getDescription()
+                        item.setProductDescription(product.getDescription());                        
                     });
                 }
             }
@@ -63,6 +66,7 @@ public class OrderService {
         Order order = new Order();
         order.setMembersId(request.getMemberId());
         order.setOrderNumber("ORD" + System.currentTimeMillis());
+        order.setReceiverName(request.getReceiverName());
         order.setPhone(request.getReceiverPhone());
         order.setShippingAddress(request.getReceiverAddress());
         order.setStatus("PENDING");
