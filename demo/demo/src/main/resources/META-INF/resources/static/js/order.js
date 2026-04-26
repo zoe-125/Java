@@ -31,6 +31,7 @@ function loadOrderHistory(userId) {
         url: `/api/orders/member/${userId}`,
         method: 'GET',
         success: function(orders) {
+            console.log("後端回傳資料內容：", orders); 
             const $container = $('#order-list-container');
             $container.empty();
 
@@ -45,38 +46,59 @@ function loadOrderHistory(userId) {
             }
 
             orders.forEach(ord => {
+            	const hasItems = ord.items && ord.items.length > 0;
                 const formattedPrice = ord.totalAmount ? ord.totalAmount.toLocaleString() : 0;
                 const orderDate = new Date(ord.createdAt).toLocaleString();
+                const unitPrice = hasItems ? (ord.items[0].purchasePrice || 0) : 0;
                 
-                // 狀態處理
                 let statusText = ord.status === 'PENDING' ? "處理中" : "已完成";
                 let statusClass = ord.status === 'PENDING' ? "status-pending" : "status-complete";
-
-                // --- 🚩 圖片與名稱處理區 ---
-                const hasItems = ord.items && ord.items.length > 0;
                 
-                // 讀取資料庫存的 "/uploads/..." 路徑
-                const imgPath = (hasItems && ord.items[0].imageUrl) 
-                                ? ord.items[0].imageUrl 
-                                : '/static/images/default-product.png';
 
-                const firstItemName = hasItems ? ord.items[0].productName : '多樣商品';
-                const itemCount = hasItems ? ord.items.length : 0;
+                // --- 🚩 整合後的圖片處理區 ---
+                
+                // 【修改點】直接嘗試讀取資料庫路徑欄位
+                // 優先使用小駝峰 imageUrl，若無則用底線 image_url，都沒有則給空字串
+                const imgPath = hasItems ? (ord.items[0].imageUrl || ord.items[0].image_url || "") : "";
 
-                // 產生卡片 HTML
-                // 🚩 修改點：這裡改用 ord.phone 以對應你的 Java DTO 變數名
+                const firstItemName = hasItems ? ord.items[0].productName : '無商品名稱';                
+                const formattedUnitPrice = unitPrice.toLocaleString();
+                const totalQty = hasItems 
+                    ? ord.items.reduce((sum, item) => sum + (item.quantity || 0), 0) 
+                    : 0;
+
                 const orderCard = `
                     <div class="order-card" onclick="openOrderDetail('${ord.orderNumber}', '${ord.receiverName}', '${ord.phone}', '${ord.shippingAddress}')">
+                        <div class="order-header">
+                            <span class="order-id-text">訂單編號：${ord.orderNumber}</span>
+                            <span class="status-badge ${statusClass}">${statusText}</span>
+                        </div>
+                        
                         <div class="order-main-info">
-                            <img src="${imgPath}" class="order-img" onerror="this.src='/static/images/default-product.png'">
+                            <img src="${imgPath}" class="order-img">
+                            
                             <div class="product-detail">
-                                <div class="product-name">${firstItemName} ${itemCount > 1 ? '等商品' : ''}</div>
-                                <div class="product-qty">共 ${itemCount} 件項目 | 下單時間：${orderDate}</div>
+                                <div class="product-name">${firstItemName} ${ord.items.length > 1 ? '等商品' : ''}</div>
+                                <div class="product-qty">x${totalQty}</div>
+                                <div class="order-date">下單時間：${orderDate}</div>
                             </div>
+                            
+                            
                             <div class="order-price-group">
-                                <div class="order-price">$${formattedPrice}</div>
-                                <span class="status-badge ${statusClass}">${statusText}</span>
-                            </div>
+							    <div class="price-row" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 50px;">
+							        <span></span> 
+							        <span class="order-price" style="font-size: 0.95rem; color: #666;">$${formattedUnitPrice}</span>
+							    </div>
+							
+							    <div class="price-row" style="display: flex; justify-content: space-between; align-items: center;">
+							        <span class="order-total-label" style="font-weight: bold;font-size: 1.2rem;">訂單金額: </span>
+							        <span class="order-price" style="color: #e44d26; font-weight: bold; font-size: 1.5rem;">$${formattedPrice}</span>
+							    </div>
+							</div>                                                                         
+                        </div>
+
+                        <div class="order-footer">
+                            <button class="btn-again" onclick="event.stopPropagation(); alert('已加入購物車');">再次購買</button>
                         </div>
                     </div>
                 `;

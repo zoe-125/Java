@@ -43,7 +43,7 @@ $(document).ready(function() {
                 <div class="cart-item ${currentStep === 2 ? 'locked' : ''}" data-index="${index}">
                     <img src="${item.img}">
                     <div class="item-info">
-                        <h4>${item.name}</h4>
+                        <h4>${item.name}</h4>                        
                         <p>$${(item.price || 0).toLocaleString()}</p>
                         <div class="quantity-selector" style="margin-top:10px;">
                             <button class="qty-btn minus" ${currentStep === 2 ? 'disabled' : ''}>-</button>
