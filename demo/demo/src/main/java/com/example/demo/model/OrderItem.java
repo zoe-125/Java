@@ -35,6 +35,10 @@ public class OrderItem {
     // JPA 規範需要一個無參數建構子
     public OrderItem() {
     }
+    
+    // 定義欄位 (建議加上 @Transient，代表這個欄位不用存進 order_item 資料表，只是回傳用)
+    @Transient
+    private String imageUrl;
 
     // --- Getter and Setter 方法 ---
 
@@ -92,5 +96,13 @@ public class OrderItem {
 
     public void setSubtotal(Integer subtotal) {
         this.subtotal = subtotal;
+    }
+       
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }
