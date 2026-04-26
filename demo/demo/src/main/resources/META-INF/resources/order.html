@@ -4,11 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LifeStyle 我的訂單</title>
-    <link rel="stylesheet" href="/static/css/product.css">    
     <link rel="stylesheet" href="/static/css/order.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
-<body class="body">
+<body>
 
 <header class="main-header">
     <div class="container-wide">
@@ -20,7 +19,7 @@
     <h2 class="page-title">歷史訂單查詢</h2>
     
     <div id="order-list-container">
-        <div class="empty-order-msg">正在載入您的訂單紀錄...</div>
+        <div class="loading-msg">正在載入您的訂單紀錄...</div>
     </div>
     
     <div class="continue-shopping-wrapper">
@@ -34,7 +33,7 @@
     <div class="modal-content">
         <span class="close-btn" id="close-modal-x">&times;</span>
         <h3>訂單詳情</h3>
-        <hr>
+        <hr class="modal-hr">
         <p><strong>訂單編號：</strong> <span id="detail-id"></span></p>
         
         <div class="shipping-info">
