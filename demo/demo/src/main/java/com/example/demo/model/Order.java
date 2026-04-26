@@ -34,7 +34,7 @@ public class Order {
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
-    @Column(name = "receiver_name") // 確保資料庫有這一欄
+    @Column(name = "receiver_name") 
     private String receiverName;
     
     // 關鍵修正：型態改為 List<OrderItem>
@@ -112,7 +112,7 @@ public class Order {
         this.createdAt = createdAt;
     }
 
-    // --- 🚩 補齊收件人姓名的 Getter and Setter ---
+    
     public String getReceiverName() {
         return receiverName;
     }
