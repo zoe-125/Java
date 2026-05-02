@@ -53,4 +53,36 @@ public class OrderController {
             return ResponseEntity.status(500).body(null);
         }
     }
+    
+    /**
+     * 🚩 新增：供後台管理頁面使用的「取得所有訂單」
+     * 對應 adminOrder.js 裡的 url: '/api/admin/orders'
+     */
+    @GetMapping("/admin/all") // 或者改為 @GetMapping("/all")，看你 JS 的 url 怎麼寫
+    public ResponseEntity<List<Order>> getAllOrders() {
+        try {
+            // 呼叫 service 抓取資料庫所有訂單
+            List<Order> orders = orderService.getAllOrders(); 
+            return ResponseEntity.ok(orders);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).build();
+        }
+    }
+
+    /**
+     * 🚩 新增：供後台管理頁面使用的「更新訂單狀態」
+     * 對應 adminOrder.js 裡的 method: 'PATCH'
+     */
+    @PatchMapping("/{id}/status")
+    public ResponseEntity<?> updateOrderStatus(@PathVariable Long id, @RequestBody java.util.Map<String, String> statusUpdate) {
+        try {
+            String newStatus = statusUpdate.get("status");
+            orderService.updateOrderStatus(id, newStatus);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("更新失敗: " + e.getMessage());
+        }
+    }
+    
 }
