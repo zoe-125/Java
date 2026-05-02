@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>LifeStyle - 後台管理</title>
+    <link rel="stylesheet" href="/static/css/admin.css">
+    <!-- 引入 FontAwesome 圖示 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="admin-container">
+        <!-- 左側側邊欄 -->
+        <aside class="sidebar">
+            <div class="brand">
+                <i class="fas fa-box"></i> LifeStyle 購物
+            </div>
+            <nav class="menu">
+                <p class="menu-label">管理選單</p>
+                <ul>
+                    <li class="active"><i class="fas fa-th-large"></i> 總覽</li>
+                    <li>
+                    	<a href="adminProduct2.html">
+                    		<i class="fas fa-shopping-bag"></i>商品管理
+                		</a>
+            		</li>
+                    <li><i class="fas fa-comment-dots"></i> 顧客留言 <span class="badge">1</span></li>
+                    <li>
+                    	<a href="adminOrder.html">
+                    		<i class="fas fa-file-invoice"></i> 訂單管理
+            			</a>
+            		</li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- 右側主內容 -->
+        <main class="main-content">
+            <!-- 頂部導航 -->
+            <header class="top-nav">
+                <a href="index.html" class="back-link">回前台</a>
+                <div class="user-info">
+                    <button class="btn-setting"><i class="fas fa-cog"></i> 後台</button>                    
+                </div>
+            </header>
+
+            <!-- 內容區 -->
+            <section class="dashboard-section">
+                <h2 class="section-title"><i class="fas fa-chart-bar"></i> 總覽</h2>
+                
+                <div class="stat-cards">
+                    <div class="card">
+                        <i class="fas fa-store icon-blue"></i>
+                        <div class="card-value">9</div>
+                        <div class="card-label">上架商品數</div>
+                    </div>
+                    <div class="card">
+                        <i class="fas fa-exclamation-triangle icon-orange"></i>
+                        <div class="card-value">3</div>
+                        <div class="card-label">售完商品數</div>
+                    </div>
+                    <div class="card">
+                        <i class="fas fa-users icon-purple"></i>
+                        <div class="card-value">-</div>
+                        <div class="card-label">總會員數</div>
+                    </div>
+                    <div class="card">
+                        <i class="fas fa-box-open icon-brown"></i>
+                        <div class="card-value">-</div>
+                        <div class="card-label">今日訂單</div>
+                    </div>
+                </div>
+            </section>
+ 
+        </main>
+    </div>
+</body>
+</html>
