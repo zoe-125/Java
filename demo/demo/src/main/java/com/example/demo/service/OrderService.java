@@ -98,4 +98,18 @@ public class OrderService {
 
         return orderRepository.save(order);
     }
+    
+    
+    // 取得所有訂單 (通常直接呼叫 Repository)
+    public List<Order> getAllOrders() {
+        return orderRepository.findAll(); // 假設你已經注入了 orderRepository
+    }
+
+    // 更新訂單狀態
+    public void updateOrderStatus(Long id, String status) {
+        Order order = orderRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("找不到該筆訂單"));
+        order.setStatus(status);
+        orderRepository.save(order);
+    }
 }
