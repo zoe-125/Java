@@ -1,0 +1,16 @@
+
+
+databaseChangeLog:
+  - changeSet:
+      id: 009-add-products-status
+      author: zoe
+      changes:
+        - addColumn:
+            tableName: products
+            columns:
+              - column:
+                  name: status
+                  type: varchar(20)
+                  defaultValue: "上架中"
+                  constraints:
+                    nullable: false
