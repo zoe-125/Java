@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>LifeStyle - 訂單管理</title>
+    <!-- 統一使用 adminProduct2.css 確保排版一致 -->
+    <link rel="stylesheet" href="/static/css/adminProduct2.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="admin-container">
+        <!-- 左側側邊欄 (結構與商品管理頁面完全一致) -->
+        <aside class="sidebar">
+            <div class="brand"><i class="fas fa-box"></i> LifeStyle 購物</div>
+            <nav class="menu">
+                <p class="menu-label">管理選單</p>
+                <ul>
+                    <li><a href="admin.html"><i class="fas fa-th-large"></i> 總覽</a></li>
+                    <li><a href="adminProduct2.html"><i class="fas fa-shopping-bag"></i> 商品管理</a></li>
+                    <li><a href="#"><i class="fas fa-comment-dots"></i> 顧客留言 <span class="badge">1</span></a></li>
+                    <li class="active"><i class="fas fa-file-invoice"></i> 訂單管理</li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- 右側主內容 -->
+        <main class="main-content">            
+            <header class="top-nav">
+                <a href="index.html" class="back-link">回前台</a>
+                <div class="user-info">
+                    <button class="btn-setting"><i class="fas fa-cog"></i> 後台</button>
+                    <span></span>
+                </div>
+            </header>
+
+            <section class="dashboard-section">
+                <!-- 標題區塊結構統一 -->
+                <div class="section-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h2 class="section-title" style="margin-bottom: 0; border-bottom: none;">
+                        <i class="fas fa-clipboard-list"></i> 訂單列表
+                    </h2>
+                    <!-- 如果訂單不需要手動新增，可以移除此按鈕 -->
+                </div>
+                
+                <!-- 使用與商品管理相同的 table-container 容器 -->
+                <div class="table-container" style="background: white; border-radius: 10px; padding: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+                    <table class="product-table"> <!-- 沿用 product-table 的 Class 以套用 CSS -->
+                        <thead>
+                            <tr>
+                                <th>訂單編號</th>
+                                <th>時間</th>
+                                <th>收件人</th>
+                                <th>電話</th>
+                                <th>取貨方式</th>
+                                <th>金額</th>
+                                <th>狀態</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="order-tbody">
+                            <!-- 這裡由 adminOrder.js 動態渲染 -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>                        
+        </main>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>    
+    <script src="static/js/adminOrder.js"></script>
+</body>
+</html>
