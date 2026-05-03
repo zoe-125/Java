@@ -43,8 +43,8 @@ $(document).ready(function() {
         // 5. 處理管理員「商品上架」入口
         if (auth.role === 'ADMIN') {
             $(clone).find('#admin-entry').html(`
-                <a href="adminProduct.html" style="color: #e67e22; font-weight: bold;">
-                    <i class="fas fa-plus-circle"></i> 商品上架
+                <a href="admin.html" style="color: #e67e22; font-weight: bold;">
+                    <i class="fas fa-plus-circle"></i> 後台管理
                 </a>
                 <span style="color:#ccc; margin:0 10px;">|</span>
             `);
@@ -74,6 +74,11 @@ $(document).ready(function() {
                 const template = document.getElementById('tpl-product-card');
 
                 products.forEach(product => {
+                	
+                	if (product.status === '已下架') {
+                        return; 
+                    }
+                
                     const clone = template.content.cloneNode(true);
                     const $card = $(clone).find('.product-card');
                     
@@ -93,6 +98,11 @@ $(document).ready(function() {
 
                     $list.append($card);
                 });
+                
+                // 如果所有商品都被過濾掉了，顯示提示文字
+                if ($list.children().length === 0) {
+                    $list.html('<p style="text-align:center; width:100%;">目前沒有商品上架中</p>');
+                }
             }
         });
     }
