@@ -16,4 +16,11 @@ databaseChangeLog:
   - include:
       file: db/changelog/008-add-orders.yaml
   - include:
-      file: db/changelog/009-add-products-status.yaml                  
+      file: db/changelog/009-add-products-status.yaml
+  - include:
+      file: db/changelog/010-create-faq.yaml
+      
+                         
+                        
+                        
+                        
