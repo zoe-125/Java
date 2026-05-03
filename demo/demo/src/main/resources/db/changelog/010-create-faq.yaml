@@ -1,0 +1,25 @@
+databaseChangeLog:
+  - changeSet:
+      id: 010-create-faq
+      author: zoe
+      changes:
+        - createTable:
+            tableName: faq_knowledge
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: keyword
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: answer
+                  type: TEXT
+                  constraints:
+                    nullable: false
