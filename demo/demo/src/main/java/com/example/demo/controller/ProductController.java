@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.Product;
+import com.example.demo.repository.ProductRepository;
 import com.example.demo.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,6 +15,7 @@ import java.nio.file.Files;
 import java.nio.file.Path; // ✅ 正確的 Path
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/products")
@@ -22,8 +24,11 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
+    @Autowired
+    private ProductRepository productRepository;
+    
     @Value("${file.upload-dir}")
-    private String uploadDir; // 從 application.yml 讀取路徑
+    private String uploadDir; // 從 application.yaml 讀取路徑
 
     /**
      * 1. 獲取所有商品 (GET)
@@ -135,14 +140,37 @@ public class ProductController {
     @PutMapping("/{id}")
     public ResponseEntity<?> updateProduct(@PathVariable Long id, @RequestBody Product productDetails) {
         return productService.getProductById(id).map(product -> {
-            // 只更新價格和描述
             product.setPrice(productDetails.getPrice());
             product.setDescription(productDetails.getDescription());
-            product.setStock(productDetails.getStock()); // ✅ 新增：更新庫存
+            product.setStock(productDetails.getStock());
             
             Product updatedProduct = productService.saveProduct(product);
             return ResponseEntity.ok(updatedProduct);
         }).orElse(ResponseEntity.notFound().build());
+    }
+    
+    // 新增此接口供前端動態選單使用
+    @GetMapping("/categories")
+    public List<String> getAllCategories() {
+        return productRepository.findDistinctCategories();
+    }
+    
+    @PatchMapping("/{id}/status")
+    public ResponseEntity<?> updateStatus(@PathVariable Long id, @RequestBody Map<String, String> body) {
+        String newStatus = body.get("status");
+        
+        // 這是核心邏輯：透過 ID 找到商品實體，修改狀態欄位，最後存回資料庫
+        return productService.getProductById(id).map(product -> {
+            product.setStatus(newStatus); // 修改狀態
+            productService.saveProduct(product); // 儲存變更
+            return ResponseEntity.ok("商品狀態已成功更新為: " + newStatus);
+        }).orElse(ResponseEntity.notFound().build());
+    }
+    
+    // 獲取所有「上架中」的商品（給消費者前台看）
+    @GetMapping("/active")
+    public List<Product> getActiveProducts() {
+        return productRepository.findByStatus("上架中");
     }
  
     
